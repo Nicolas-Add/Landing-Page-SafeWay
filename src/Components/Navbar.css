@@ -1,0 +1,206 @@
+
+.navbar-principal {
+  width: 100%;
+  height: 76px;
+  padding: 0 25px;
+
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  background: #050505;
+  box-sizing: border-box;
+}
+
+/* Botão menu */
+
+.botao-menu {
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+/* Pesquisa */
+
+.pesquisa {
+  width: 310px;
+  height: 40px;
+  padding: 0 20px;
+
+  border: 1px solid #8539d9;
+  border-radius: 30px;
+
+  background: linear-gradient(
+    110deg,
+    #000000 65%,
+    #7824cf
+  );
+
+  color: white;
+  outline: none;
+}
+
+.pesquisa::placeholder {
+  color: white;
+}
+
+/* Botões de navegação */
+
+.nav-item {
+  height: 40px;
+  min-width: 125px;
+  padding: 0 20px;
+
+  border: 1px solid #8539d9;
+  border-radius: 30px;
+
+  background: linear-gradient(
+    110deg,
+    #000000 65%,
+    #7824cf
+  );
+
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-item:hover,
+.nav-item.ativo {
+  background: linear-gradient(
+    110deg,
+    #25103d,
+    #8735df
+  );
+}
+
+/* Botão adicionar */
+
+.botao-adicionar {
+  width: 40px;
+  height: 40px;
+
+  border: 1px solid #8539d9;
+  border-radius: 50%;
+
+  background: #050505;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.botao-adicionar:hover {
+  background: #7025bd;
+}
+
+/* Espaçamento automático */
+
+.navbar-espacador {
+  flex: 1;
+}
+
+/* Registrar ocorrência */
+
+.botao-registrar {
+  height: 40px;
+  padding: 0 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  border: 1px solid #8539d9;
+  border-radius: 30px;
+
+  background: linear-gradient(
+    110deg,
+    #000000 65%,
+    #7824cf
+  );
+
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.botao-registrar span {
+  font-size: 19px;
+}
+
+.botao-registrar:hover {
+  background: #7025bd;
+}
+
+/* Perfil */
+
+.botao-perfil {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #8539d9;
+  border-radius: 50%;
+
+  background: #050505;
+  color: white;
+  cursor: pointer;
+}
+
+.botao-perfil span:first-child {
+  font-size: 15px;
+}
+
+.botao-perfil span:last-child {
+  font-size: 14px;
+}
+
+/* Responsividade */
+
+@media (max-width: 850px) {
+  .navbar-principal {
+    gap: 8px;
+    padding: 0 10px;
+  }
+
+  .pesquisa {
+    width: 150px;
+  }
+
+  .nav-item {
+    min-width: auto;
+    padding: 0 12px;
+  }
+
+  .botao-registrar {
+    padding: 0 12px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pesquisa {
+    display: none;
+  }
+
+  .navbar-principal {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 70px;
+    padding: 12px;
+  }
+
+  .navbar-espacador {
+    display: none;
+  }
+
+  .botao-registrar {
+    margin-left: auto;
+  }
+}
