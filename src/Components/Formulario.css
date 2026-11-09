@@ -9,7 +9,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
+  background: transparent; /* Inicialmente transparente */
+  transition: background 0.3s ease-in-out;
   z-index: 999;
 }
 
@@ -69,8 +70,13 @@
 
 .form-ocorrencia h2 {
   color: #fff;
-  font-size: 20px;
+  font-size: 40px;
   margin-bottom: 10px;
+  text-transform: uppercase;
+  text-align: start;
+  width: min-content;  /* Força uma palavra por linha */
+  line-height: 1;
+
 }
 
 .form-ocorrencia label {
@@ -169,6 +175,23 @@
 }
 
 .form-actions .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(245, 20, 20, 0.05);
   border-color: #888;
+}
+
+.btn-buscar {
+  background: #7c3aed; /* Altere aqui a cor de fundo (ex: roxo) */
+  color: #fff;         /* Cor do texto */
+  border: none;
+  border-radius: 20px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.btn-buscar:hover {
+  background: #6d28d9; /* Cor ao passar o mouse */
 }

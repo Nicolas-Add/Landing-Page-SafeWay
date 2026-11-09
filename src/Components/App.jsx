@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import Formulario from './Formulario.jsx';
 import NavBar from './NavBar.jsx';
 import Mapa from './Mapa.jsx';
@@ -7,6 +6,8 @@ import Mapa from './Mapa.jsx';
 function App() {
   const [abaAtiva, setAbaAtiva] = useState('mapa');
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [marcadorTemporario, setMarcadorTemporario] = useState(null);
+  const [ocorrenciasSalvas, setOcorrenciasSalvas] = useState([]);
 
   function registrarOcorrencia() {
     setMostrarFormulario(true);
@@ -17,21 +18,25 @@ function App() {
     setMostrarFormulario(false);
   }
 
+  function salvarNovaOcorrencia(novaOcorrencia) {
+    setOcorrenciasSalvas((prev) => [...prev, novaOcorrencia]);
+  }
+
   return (
     <div className="aplicativo">
-
-      {/* Barra de navegação */}
       <NavBar
         abaAtiva={abaAtiva}
         setAbaAtiva={trocarAba}
         onRegistrar={registrarOcorrencia}
       />
 
-      {/* Conteúdo principal (Mantém o mapa ou as abas fixas no fundo) */}
       <main className="conteudo-principal">
         {abaAtiva === 'mapa' ? (
           <section className="pagina-mapa">
-            <Mapa />
+            <Mapa
+              marcadorTemporario={marcadorTemporario}
+              ocorrenciasSalvas={ocorrenciasSalvas}
+            />
           </section>
         ) : abaAtiva === 'bairro' ? (
           <section className="pagina-bairro" style={{ padding: '100px 30px', color: '#fff' }}>
@@ -46,12 +51,15 @@ function App() {
         ) : null}
       </main>
 
-      {/* Painel lateral flutuante (Puxadinho) acionado pelo estado */}
-      <Formulario 
-        isOpen={mostrarFormulario} 
-        onClose={() => setMostrarFormulario(false)} 
+      <Formulario
+        isOpen={mostrarFormulario}
+        onClose={() => {
+          setMostrarFormulario(false);
+          setMarcadorTemporario(null); // Limpa o temporário se fechar
+        }}
+        setMarcadorTemporario={setMarcadorTemporario}
+        onSalvarOcorrencia={salvarNovaOcorrencia}
       />
-
     </div>
   );
 }

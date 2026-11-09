@@ -1,9 +1,7 @@
 import { useState } from "react";
 import "./Formulario.css";
 
-// Você pode receber uma prop como `isOpen` e `onClose` se o botão de abrir estiver no App.jsx,
-// ou controlar tudo localmente caso prefira. Aqui faremos o controle local com uma prop opcional ou estado interno:
-function Formulario({ isOpen, onClose }) {
+function Formulario({ isOpen, onClose, setMarcadorTemporario, onSalvarOcorrencia }) {
   const hoje = new Date();
   const ano = hoje.getFullYear();
   const mes = String(hoje.getMonth() + 1).padStart(2, "0");
@@ -18,86 +16,105 @@ function Formulario({ isOpen, onClose }) {
   const [outroRisco, setOutroRisco] = useState("");
   const [imagem, setImagem] = useState(null);
   const [fonte, setFonte] = useState("");
+  const [coordenadasTemp, setCoordenadasTemp] = useState(null);
+
+  async function buscarEndereco() {
+    if (!local.trim()) return;
+
+    try {
+      const query = encodeURIComponent(`${local}, Canoas, RS, Brasil`);
+      const resposta = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1`
+      );
+      const dados = await resposta.json();
+
+      if (dados.length > 0) {
+        const coords = {
+          lat: parseFloat(dados[0].lat),
+          lng: parseFloat(dados[0].lon),
+          endereco: dados[0].display_name,
+        };
+        setCoordenadasTemp(coords);
+        setMarcadorTemporario(coords); // Move o mapa e exibe o pin temporário
+      } else {
+        alert("Endereço não encontrado no mapa.");
+      }
+    } catch (erro) {
+      console.error("Erro ao buscar endereço:", erro);
+    }
+  }
 
   function enviarFormulario(event) {
     event.preventDefault();
+
+    if (!coordenadasTemp) {
+      alert("Por favor, busque e selecione um local válido no mapa clicando em 'Buscar'.");
+      return;
+    }
 
     if (data > data_atual) {
       alert("A data não pode ser maior que a data atual!");
       return;
     }
 
-    if (tipoDeRisco === "Outro" && outroRisco.trim().length < 3) {
-      alert("Descreva o tipo de risco com pelo menos 3 caracteres.");
-      return;
-    }
+    const riscoFinal = tipoDeRisco === "Outro" ? outroRisco.trim() : tipoDeRisco;
 
-    const riscoFinal =
-      tipoDeRisco === "Outro"
-        ? outroRisco.trim()
-        : tipoDeRisco;
+    const novaOcorrencia = {
+      nome,
+      local,
+      lat: coordenadasTemp.lat,
+      lng: coordenadasTemp.lng,
+      tipoDeRisco: riscoFinal,
+      data,
+      descricao,
+    };
 
-    alert(
-      `Nome: ${nome}\n` +
-      `Local: ${local}\n` +
-      `Tipo de risco: ${riscoFinal}\n` +
-      `Data: ${data}\n` +
-      `Descrição: ${descricao}\n` +
-      `Imagem: ${imagem ? imagem.name : "Nenhuma imagem anexada"}\n` +
-      `Fonte: ${fonte.trim() || "Não informada"}`
-    );
-
-    // Fecha o painel após enviar com sucesso (se a função onClose existir)
-    if (onClose) onClose();
+    onSalvarOcorrencia(novaOcorrencia); // Salva definitivamente
+    setMarcadorTemporario(null);
+    onClose();
   }
 
   return (
     <>
-      {/* Fundo escuro translúcido atrás do painel */}
       {isOpen && <div className="drawer-overlay" onClick={onClose} />}
 
-      {/* Painel lateral (puxadinho) */}
       <aside className={`drawer-container ${isOpen ? "open" : ""}`}>
         <button type="button" className="back-btn" onClick={onClose}>
           Voltar &larr;
         </button>
 
         <form className="form-ocorrencia" onSubmit={enviarFormulario}>
-          <h2>Registrar Ocorrência ⚠️</h2>
+          <h2>Registrar Ocorrência</h2>
 
           <label htmlFor="nome">Nome:</label>
           <input
             id="nome"
             type="text"
             value={nome}
-            onChange={(event) => setNome(event.target.value)}
-            minLength={3}
-            maxLength={30}
+            onChange={(e) => setNome(e.target.value)}
             required
           />
 
           <label htmlFor="local">Local:</label>
-          <input
-            id="local"
-            type="text"
-            value={local}
-            onChange={(event) => setLocal(event.target.value)}
-            minLength={3}
-            maxLength={150}
-            required
-          />
+          <div style={{ display: "flex", gap: "8px" }}>
+            <input
+              id="local"
+              type="text"
+              value={local}
+              onChange={(e) => setLocal(e.target.value)}
+              placeholder="Digite o endereço..."
+              required
+            />
+            <button type="button" onClick={buscarEndereco} className="btn-buscar">
+              Buscar
+            </button>
+          </div>
 
           <label htmlFor="tipoRisco">Tipo de risco:</label>
           <select
             id="tipoRisco"
             value={tipoDeRisco}
-            onChange={(event) => {
-              setTipoDeRisco(event.target.value);
-              if (event.target.value !== "Outro") {
-                setOutroRisco("");
-              }
-            }}
-            required
+            onChange={(e) => setTipoDeRisco(e.target.value)}
           >
             <option value="Obras e Infraestrutura">Obras e Infraestrutura</option>
             <option value="Serviços Urbanos">Serviços Urbanos</option>
@@ -107,28 +124,13 @@ function Formulario({ isOpen, onClose }) {
             <option value="Outro">Outro</option>
           </select>
 
-          {tipoDeRisco === "Outro" && (
-            <>
-              <label htmlFor="outroRisco">Descreva o tipo de risco:</label>
-              <input
-                id="outroRisco"
-                type="text"
-                value={outroRisco}
-                onChange={(event) => setOutroRisco(event.target.value)}
-                minLength={3}
-                maxLength={100}
-                required
-              />
-            </>
-          )}
-
-          <label htmlFor="data">Data da ocorrência:</label>
+          <label htmlFor="data">Data:</label>
           <input
             id="data"
             type="date"
             value={data}
             max={data_atual}
-            onChange={(event) => setData(event.target.value)}
+            onChange={(e) => setData(e.target.value)}
             required
           />
 
@@ -136,62 +138,8 @@ function Formulario({ isOpen, onClose }) {
           <textarea
             id="descricao"
             value={descricao}
-            onChange={(event) => setDescricao(event.target.value)}
-            minLength={3}
-            maxLength={300}
+            onChange={(e) => setDescricao(e.target.value)}
             required
-          />
-
-          <label htmlFor="imagem">
-            Imagem da ocorrência (opcional):
-          </label>
-          <input
-            id="imagem"
-            type="file"
-            accept=".jpg,.jpeg,.png,.webp"
-            onChange={(event) => {
-              const arquivo = event.target.files[0];
-              if (!arquivo) {
-                setImagem(null);
-                return;
-              }
-
-              const formatosPermitidos = [
-                "image/jpeg",
-                "image/png",
-                "image/webp",
-              ];
-
-              if (!formatosPermitidos.includes(arquivo.type)) {
-                alert("Formato inválido! Envie somente JPG, JPEG, PNG ou WEBP.");
-                event.target.value = "";
-                setImagem(null);
-                return;
-              }
-
-              setImagem(arquivo);
-            }}
-          />
-
-          {imagem && (
-            <p className="imagem-selecionada">
-              Imagem selecionada: {imagem.name}
-            </p>
-          )}
-
-          <p className="aviso-privacidade">
-            <strong>ATENÇÃO:</strong> Não adicione imagens que exponham
-            documentos, rostos, placas de veículos ou outros dados
-            pessoais desnecessários.
-          </p>
-
-          <label htmlFor="fonte">Fonte (opcional):</label>
-          <textarea
-            id="fonte"
-            value={fonte}
-            onChange={(event) => setFonte(event.target.value)}
-            maxLength={300}
-            placeholder="Link ou referência da informação"
           />
 
           <div className="form-actions">
@@ -199,7 +147,7 @@ function Formulario({ isOpen, onClose }) {
               Excluir
             </button>
             <button type="submit" className="btn-primary">
-              Enviar ocorrência
+              Registrar
             </button>
           </div>
         </form>
