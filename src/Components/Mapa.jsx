@@ -53,4 +53,23 @@ function Mapa() {
   );
 }
 
+async function buscarBairro(nomeBairro) {
+  const endereco = `${nomeBairro}, Canoas, Rio Grande do Sul, Brasil`;
+
+  const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&q=${encodeURIComponent(endereco)}&limit=1`;
+
+  const resposta = await fetch(url);
+  const dados = await resposta.json();
+
+  if (dados.length === 0) {
+    alert("Bairro não encontrado!");
+    return;
+  }
+
+  const latitude = Number(dados[0].lat);
+  const longitude = Number(dados[0].lon);
+
+  mapa.flyTo([latitude, longitude], 15);
+}
+
 export default Mapa;

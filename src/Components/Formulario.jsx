@@ -1,8 +1,9 @@
-
 import { useState } from "react";
 import "./Formulario.css";
 
-function Formulario() {
+// Você pode receber uma prop como `isOpen` e `onClose` se o botão de abrir estiver no App.jsx,
+// ou controlar tudo localmente caso prefira. Aqui faremos o controle local com uma prop opcional ou estado interno:
+function Formulario({ isOpen, onClose }) {
   const hoje = new Date();
   const ano = hoje.getFullYear();
   const mes = String(hoje.getMonth() + 1).padStart(2, "0");
@@ -13,7 +14,7 @@ function Formulario() {
   const [local, setLocal] = useState("");
   const [data, setData] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [tipoDeRisco, setTipoDeRisco] = useState("");
+  const [tipoDeRisco, setTipoDeRisco] = useState("Obras e Infraestrutura");
   const [outroRisco, setOutroRisco] = useState("");
   const [imagem, setImagem] = useState(null);
   const [fonte, setFonte] = useState("");
@@ -45,150 +46,165 @@ function Formulario() {
       `Imagem: ${imagem ? imagem.name : "Nenhuma imagem anexada"}\n` +
       `Fonte: ${fonte.trim() || "Não informada"}`
     );
+
+    // Fecha o painel após enviar com sucesso (se a função onClose existir)
+    if (onClose) onClose();
   }
 
   return (
-    <form
-      className="form-ocorrencia"
-      onSubmit={enviarFormulario}
-    >
-      <label htmlFor="nome">Nome:</label>
-      <input
-        id="nome"
-        type="text"
-        value={nome}
-        onChange={(event) => setNome(event.target.value)}
-        minLength={3}
-        maxLength={30}
-        required
-      />
+    <>
+      {/* Fundo escuro translúcido atrás do painel */}
+      {isOpen && <div className="drawer-overlay" onClick={onClose} />}
 
-      <label htmlFor="local">Local:</label>
-      <input
-        id="local"
-        type="text"
-        value={local}
-        onChange={(event) => setLocal(event.target.value)}
-        minLength={3}
-        maxLength={150}
-        required
-      />
+      {/* Painel lateral (puxadinho) */}
+      <aside className={`drawer-container ${isOpen ? "open" : ""}`}>
+        <button type="button" className="back-btn" onClick={onClose}>
+          Voltar &larr;
+        </button>
 
-      <label htmlFor="tipoRisco">Tipo de risco:</label>
-      <select
-        id="tipoRisco"
-        value={tipoDeRisco}
-        onChange={(event) => {
-          setTipoDeRisco(event.target.value);
+        <form className="form-ocorrencia" onSubmit={enviarFormulario}>
+          <h2>Registrar Ocorrência ⚠️</h2>
 
-          if (event.target.value !== "Outro") {
-            setOutroRisco("");
-          }
-        }}
-        required
-      >
-        
-        <option value="Obras e Infraestrutura">Obras e Infraestrutura</option>
-        <option value="Serviços Urbanos">Serviços Urbanos</option>
-        <option value="Saúde e Assistência">Saúde e Assistência</option>
-        <option value="Defesa civil e alertas">Defesa civil e alertas</option>
-        <option value="Eventos e Cultura">Eventos e Cultura</option>
-      </select>
-
-      {tipoDeRisco === "Outro" && (
-        <>
-          <label htmlFor="outroRisco">
-            Descreva o tipo de risco:
-          </label>
+          <label htmlFor="nome">Nome:</label>
           <input
-            id="outroRisco"
+            id="nome"
             type="text"
-            value={outroRisco}
-            onChange={(event) => setOutroRisco(event.target.value)}
+            value={nome}
+            onChange={(event) => setNome(event.target.value)}
             minLength={3}
-            maxLength={100}
+            maxLength={30}
             required
           />
-        </>
-      )}
 
-      <label htmlFor="data">Data da ocorrência:</label>
-      <input
-        id="data"
-        type="date"
-        value={data}
-        max={data_atual}
-        onChange={(event) => setData(event.target.value)}
-        required
-      />
+          <label htmlFor="local">Local:</label>
+          <input
+            id="local"
+            type="text"
+            value={local}
+            onChange={(event) => setLocal(event.target.value)}
+            minLength={3}
+            maxLength={150}
+            required
+          />
 
-      <label htmlFor="descricao">Descrição:</label>
-      <textarea
-        id="descricao"
-        value={descricao}
-        onChange={(event) => setDescricao(event.target.value)}
-        minLength={3}
-        maxLength={300}
-        required
-      />
+          <label htmlFor="tipoRisco">Tipo de risco:</label>
+          <select
+            id="tipoRisco"
+            value={tipoDeRisco}
+            onChange={(event) => {
+              setTipoDeRisco(event.target.value);
+              if (event.target.value !== "Outro") {
+                setOutroRisco("");
+              }
+            }}
+            required
+          >
+            <option value="Obras e Infraestrutura">Obras e Infraestrutura</option>
+            <option value="Serviços Urbanos">Serviços Urbanos</option>
+            <option value="Saúde e Assistência">Saúde e Assistência</option>
+            <option value="Defesa civil e alertas">Defesa civil e alertas</option>
+            <option value="Eventos e Cultura">Eventos e Cultura</option>
+            <option value="Outro">Outro</option>
+          </select>
 
-      <label htmlFor="imagem">
-        Imagem da ocorrência (opcional):
-      </label>
-      <input
-        id="imagem"
-        type="file"
-        accept=".jpg,.jpeg,.png,.webp"
-        onChange={(event) => {
-          const arquivo = event.target.files[0];
+          {tipoDeRisco === "Outro" && (
+            <>
+              <label htmlFor="outroRisco">Descreva o tipo de risco:</label>
+              <input
+                id="outroRisco"
+                type="text"
+                value={outroRisco}
+                onChange={(event) => setOutroRisco(event.target.value)}
+                minLength={3}
+                maxLength={100}
+                required
+              />
+            </>
+          )}
 
-          if (!arquivo) {
-            setImagem(null);
-            return;
-          }
+          <label htmlFor="data">Data da ocorrência:</label>
+          <input
+            id="data"
+            type="date"
+            value={data}
+            max={data_atual}
+            onChange={(event) => setData(event.target.value)}
+            required
+          />
 
-          const formatosPermitidos = [
-            "image/jpeg",
-            "image/png",
-            "image/webp",
-          ];
+          <label htmlFor="descricao">Descrição:</label>
+          <textarea
+            id="descricao"
+            value={descricao}
+            onChange={(event) => setDescricao(event.target.value)}
+            minLength={3}
+            maxLength={300}
+            required
+          />
 
-          if (!formatosPermitidos.includes(arquivo.type)) {
-            alert(
-              "Formato inválido! Envie somente JPG, JPEG, PNG ou WEBP."
-            );
-            event.target.value = "";
-            setImagem(null);
-            return;
-          }
+          <label htmlFor="imagem">
+            Imagem da ocorrência (opcional):
+          </label>
+          <input
+            id="imagem"
+            type="file"
+            accept=".jpg,.jpeg,.png,.webp"
+            onChange={(event) => {
+              const arquivo = event.target.files[0];
+              if (!arquivo) {
+                setImagem(null);
+                return;
+              }
 
-          setImagem(arquivo);
-        }}
-      />
+              const formatosPermitidos = [
+                "image/jpeg",
+                "image/png",
+                "image/webp",
+              ];
 
-      {imagem && (
-        <p className="imagem-selecionada">
-          Imagem selecionada: {imagem.name}
-        </p>
-      )}
+              if (!formatosPermitidos.includes(arquivo.type)) {
+                alert("Formato inválido! Envie somente JPG, JPEG, PNG ou WEBP.");
+                event.target.value = "";
+                setImagem(null);
+                return;
+              }
 
-      <p className="aviso-privacidade">
-        <strong>ATENÇÃO:</strong> Não adicione imagens que exponham
-        documentos, rostos, placas de veículos ou outros dados
-        pessoais desnecessários.
-      </p>
+              setImagem(arquivo);
+            }}
+          />
 
-      <label htmlFor="fonte">Fonte (opcional):</label>
-      <textarea
-        id="fonte"
-        value={fonte}
-        onChange={(event) => setFonte(event.target.value)}
-        maxLength={300}
-        placeholder="Link ou referência da informação"
-      />
+          {imagem && (
+            <p className="imagem-selecionada">
+              Imagem selecionada: {imagem.name}
+            </p>
+          )}
 
-      <button type="submit">Enviar ocorrência</button>
-    </form>
+          <p className="aviso-privacidade">
+            <strong>ATENÇÃO:</strong> Não adicione imagens que exponham
+            documentos, rostos, placas de veículos ou outros dados
+            pessoais desnecessários.
+          </p>
+
+          <label htmlFor="fonte">Fonte (opcional):</label>
+          <textarea
+            id="fonte"
+            value={fonte}
+            onChange={(event) => setFonte(event.target.value)}
+            maxLength={300}
+            placeholder="Link ou referência da informação"
+          />
+
+          <div className="form-actions">
+            <button type="button" className="btn-secondary" onClick={onClose}>
+              Excluir
+            </button>
+            <button type="submit" className="btn-primary">
+              Enviar ocorrência
+            </button>
+          </div>
+        </form>
+      </aside>
+    </>
   );
 }
 

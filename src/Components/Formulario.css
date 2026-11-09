@@ -1,121 +1,174 @@
+/* ==========================================
+   PAINEL LATERAL (DRAWER / PUXADINHO)
+   ========================================== */
 
-/* Formulário mais compacto */
-.form-ocorrencia {
-  width: 100%;
-  max-width: 520px;
-  margin: 20px auto;
-  padding: 22px;
+/* Fundo escuro translúcido atrás do painel quando aberto */
+.drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+}
 
+/* Container principal do painel (escondido fora da tela à direita) */
+.drawer-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 420px;
+  max-width: 90vw;
+  height: 100vh;
+  background-color: #1e1e20; /* Cor escura idêntica à do seu layout */
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+  padding: 24px;
   box-sizing: border-box;
-  background-color: #ffffff;
-  color: #1e293b;
+  z-index: 1000;
+  overflow-y: auto;
 
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  box-shadow: 0 5px 20px rgba(15, 23, 42, 0.08);
+  /* Efeito de deslizar suave */
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
 
-  font-family: Arial, Helvetica, sans-serif;
+/* Quando ganha a classe 'open', o painel desliza para dentro da tela */
+.drawer-container.open {
+  transform: translateX(0);
+}
+
+/* Botão de voltar dentro do painel */
+.drawer-container .back-btn {
+  background: none;
+  border: none;
+  color: #aaa;
   font-size: 14px;
-  line-height: 1.4;
-  text-align: left;
+  cursor: pointer;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.form-ocorrencia * {
-  box-sizing: border-box;
+.drawer-container .back-btn:hover {
+  color: #fff;
 }
 
-/* Rótulos */
+
+/* ==========================================
+   ESTILOS DO FORMULÁRIO DE OCORRÊNCIA
+   ========================================== */
+
+.form-ocorrencia {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-ocorrencia h2 {
+  color: #fff;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
 .form-ocorrencia label {
-  display: block;
-  margin: 12px 0 5px;
-  color: #334155;
-  font-size: 13px;
-  font-weight: 600;
+  color: #ddd;
+  font-size: 14px;
+  margin-top: 6px;
 }
 
-/* Campos */
-.form-ocorrencia input:not([type="file"]),
+.form-ocorrencia input[type="text"],
+.form-ocorrencia input[type="date"],
 .form-ocorrencia select,
 .form-ocorrencia textarea {
-  display: block;
+  background: #121214;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 10px 16px;
+  color: #fff;
+  font-size: 14px;
   width: 100%;
-  min-height: 38px;
-  padding: 8px 10px;
-
-  border: 1px solid #cbd5e1;
-  border-radius: 7px;
-  background-color: #ffffff;
-  color: #1e293b;
-  font: inherit;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s;
 }
 
-/* Descrição e fonte */
+.form-ocorrencia input:focus,
+.form-ocorrencia select:focus,
+.form-ocorrencia textarea:focus {
+  border-color: #7c3aed; /* Cor de destaque ao focar (roxo) */
+}
+
 .form-ocorrencia textarea {
-  min-height: 85px;
   resize: vertical;
+  min-height: 80px;
 }
 
-/* Anexo */
+/* Estilização para o input de arquivo (upload de imagem) */
 .form-ocorrencia input[type="file"] {
-  display: block;
-  width: 100%;
-  padding: 8px;
-  border: 1px dashed #94a3b8;
-  border-radius: 7px;
-  background-color: #f8fafc;
-  color: #334155;
-  font-size: 12px;
+  color: #aaa;
+  padding: 8px 0;
+  font-size: 13px;
 }
 
-/* Aviso de privacidade */
-.form-ocorrencia .aviso-privacidade {
-  margin: 16px 0;
-  padding: 10px 12px;
-
-  border-left: 3px solid #d97706;
-  border-radius: 5px;
-  background-color: #fffbeb;
-  color: #78350f;
-  font-size: 12px;
-  line-height: 1.5;
+.imagem-selecionada {
+  color: #4ade80; /* Verde claro indicando sucesso */
+  font-size: 13px;
+  margin: 4px 0;
 }
 
-/* Imagem selecionada */
-.form-ocorrencia .imagem-selecionada {
-  margin-top: 6px;
-  color: #64748b;
+.aviso-privacidade {
+  color: #a1a1aa;
   font-size: 12px;
-  overflow-wrap: anywhere;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px;
+  border-radius: 12px;
+  border-left: 3px solid #f59e0b; /* Alerta em amarelo */
+  margin: 8px 0;
+  line-height: 1.4;
 }
 
-/* Botão */
-.form-ocorrencia button[type="submit"] {
-  display: block;
-  width: 100%;
-  min-height: 40px;
-  margin-top: 18px;
-  padding: 9px 16px;
 
+/* ==========================================
+   BOTÕES DE AÇÃO INFERIORES
+   ========================================== */
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.form-actions .btn-primary {
+  flex: 1;
+  background: #fff;
+  color: #111;
+  font-weight: bold;
   border: none;
-  border-radius: 7px;
-  background-color: #2563eb;
-  color: #ffffff;
-
-  font: inherit;
-  font-weight: 700;
+  border-radius: 20px;
+  padding: 12px;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
-.form-ocorrencia button[type="submit"]:hover {
-  background-color: #1d4ed8;
+.form-actions .btn-primary:hover {
+  background: #e4e4e7;
 }
 
-/* Celulares */
-@media (max-width: 600px) {
-  .form-ocorrencia {
-    width: 100%;
-    margin: 10px auto;
-    padding: 16px;
-    border-radius: 10px;
-  }
+.form-actions .btn-secondary {
+  flex: 1;
+  background: transparent;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 20px;
+  padding: 12px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.form-actions .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #888;
 }
