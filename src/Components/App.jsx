@@ -22,15 +22,27 @@ function App() {
   }
 
   function salvarNovaOcorrencia(novaOcorrencia) {
+    const lat = marcadorTemporario?.lat ?? novaOcorrencia.lat;
+    const lng = marcadorTemporario?.lng ?? novaOcorrencia.lng;
+
+    const ocorrenciaComCoordenadas = {
+      ...novaOcorrencia,
+      lat: Number(lat),
+      lng: Number(lng),
+    };
+
+    console.log('Ocorrência salva:', ocorrenciaComCoordenadas);
+
     setOcorrenciasSalvas((prev) => [
       ...prev,
-      novaOcorrencia
+      ocorrenciaComCoordenadas,
     ]);
+
+    setMarcadorTemporario(null);
   }
 
   return (
     <div className="aplicativo">
-
       <NavBar
         abaAtiva={abaAtiva}
         setAbaAtiva={trocarAba}
@@ -38,8 +50,6 @@ function App() {
       />
 
       <main className="conteudo-principal">
-
-        {/* Mapa permanece montado */}
         <section
           className={`pagina-mapa ${
             abaAtiva !== 'mapa' ? 'pagina-oculta' : ''
@@ -49,24 +59,22 @@ function App() {
             marcadorTemporario={marcadorTemporario}
             ocorrenciasSalvas={ocorrenciasSalvas}
             visivel={abaAtiva === 'mapa'}
+            onMoverMarcador={setMarcadorTemporario}
           />
         </section>
 
-        {/* Meu bairro */}
         <section
           className={`pagina-bairro ${
             abaAtiva !== 'bairro' ? 'pagina-oculta' : ''
           }`}
         >
           <h1>Meu bairro</h1>
-
           <p>
             Acompanhe as ocorrências e os alertas
             registrados na sua região.
           </p>
         </section>
 
-        {/* Mural permanece montado */}
         <section
           className={`pagina-mural ${
             abaAtiva !== 'mural' ? 'pagina-oculta' : ''
@@ -77,10 +85,8 @@ function App() {
             onSalvarOcorrencia={salvarNovaOcorrencia}
           />
         </section>
-
       </main>
 
-      {/* Formulário */}
       <Formulario
         isOpen={mostrarFormulario}
         onClose={() => {
@@ -88,9 +94,9 @@ function App() {
           setMarcadorTemporario(null);
         }}
         setMarcadorTemporario={setMarcadorTemporario}
+        marcadorTemporario={marcadorTemporario}
         onSalvarOcorrencia={salvarNovaOcorrencia}
       />
-
     </div>
   );
 }

@@ -1,5 +1,7 @@
 
-/* Altura da aplicação */
+/* ==============================
+   ESTRUTURA PRINCIPAL
+============================== */
 
 html,
 body,
@@ -16,105 +18,82 @@ body,
   flex-direction: column;
 }
 
-/* Aplicação principal */
-
 .aplicativo {
   width: 100%;
   height: 100%;
   flex: 1;
   min-height: 0;
-
   display: flex;
   flex-direction: column;
-
   overflow: hidden;
 }
-
-/* Conteúdo principal */
 
 .conteudo-principal {
   flex: 1;
   min-height: 0;
   min-width: 0;
   width: 100%;
-
   display: flex;
   flex-direction: column;
-
   overflow: hidden;
 }
 
-/* Área do mapa */
+/* ==============================
+   ÁREAS DAS ABAS
+============================== */
 
 .pagina-mapa {
   flex: 1;
   min-height: 0;
   min-width: 0;
   width: 100%;
-
   display: flex;
-
   overflow: hidden;
 }
-
-/* Área do Mural */
 
 .pagina-mural {
   flex: 1;
   min-height: 0;
   min-width: 0;
   width: 100%;
-
   overflow: auto;
 }
-
-/* Área Meu bairro */
 
 .pagina-bairro {
   flex: 1;
   min-height: 0;
   width: 100%;
-
   overflow: auto;
   padding: 100px 30px;
   color: white;
   box-sizing: border-box;
 }
 
-/* Esconde as abas sem desmontar seus componentes */
-
 .pagina-oculta {
   display: none !important;
 }
 
-/* Container do Leaflet */
+/* ==============================
+   CONTAINER DO LEAFLET
+============================== */
 
 .container-mapa {
   position: relative;
-
   flex: 1;
   width: 100%;
   height: 100%;
-
   min-height: 0;
   min-width: 0;
-
   overflow: hidden;
 }
-
-/* Mapa */
 
 .mapa {
   position: absolute !important;
   inset: 0;
-
   width: 100%;
   height: 100%;
-
   z-index: 1;
 }
-
-/* Correção dos elementos internos */
 
 .mapa .leaflet-pane,
 .mapa .leaflet-tile,
@@ -122,4 +101,164 @@ body,
 .mapa .leaflet-marker-shadow {
   max-width: none;
   max-height: none;
+}
+
+/* ==============================
+   MARCADORES PERSONALIZADOS
+============================== */
+
+.marcador-personalizado {
+  background: transparent;
+  border: none;
+}
+
+.icone-mapa {
+  width: 38px;
+  height: 38px;
+  background: var(--cor-marcador);
+  border: 3px solid #ffffff;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease;
+}
+
+.icone-mapa span {
+  transform: rotate(45deg);
+  font-size: 17px;
+}
+
+/* Indicação visual de marcador arrastável */
+
+.mapa .leaflet-marker-draggable {
+  cursor: grab;
+}
+
+.mapa .leaflet-marker-draggable:active {
+  cursor: grabbing;
+}
+
+/* ==============================
+   POPUP DO LEAFLET
+============================== */
+
+.popup-safeway .leaflet-popup-content-wrapper {
+  background: #111827;
+  color: #f1f5f9;
+  border-radius: 12px;
+}
+
+.popup-safeway .leaflet-popup-content {
+  margin: 14px;
+  width: 260px !important;
+}
+
+.popup-safeway .leaflet-popup-tip {
+  background: #111827;
+}
+
+.popup-safeway .leaflet-popup-close-button {
+  color: #ffffff !important;
+  font-size: 20px !important;
+}
+
+/* ==============================
+   CARTÃO DA OCORRÊNCIA
+============================== */
+
+.popup-ocorrencia {
+  font-family: Arial, sans-serif;
+  color: #f1f5f9;
+}
+
+.popup-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #374151;
+}
+
+.popup-icone {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+}
+
+.popup-titulo {
+  min-width: 0;
+}
+
+.popup-cabecalho strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.popup-data {
+  display: block;
+  color: #9ca3af;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.popup-conteudo {
+  padding: 12px 0 4px;
+}
+
+.popup-campo {
+  margin-bottom: 11px;
+}
+
+.popup-campo strong {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.popup-campo p {
+  font-size: 12px;
+  color: #f1f5f9;
+  margin: 4px 0 0;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* ==============================
+   STATUS DA OCORRÊNCIA
+============================== */
+
+.popup-status {
+  padding: 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.popup-status.fonte-informada {
+  background: #1e3a5f;
+  color: #93c5fd;
+}
+
+.popup-status.nao-verificado {
+  background: #78350f;
+  color: #fcd34d;
+}
+
+/* ==============================
+   RESPONSIVIDADE
+============================== */
+
+@media (max-width: 600px) {
+  .popup-safeway .leaflet-popup-content {
+    width: 230px !important;
+  }
 }
