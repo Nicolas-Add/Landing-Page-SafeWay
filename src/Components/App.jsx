@@ -1,4 +1,6 @@
+
 import { useState } from 'react';
+
 import Formulario from './Formulario.jsx';
 import NavBar from './NavBar.jsx';
 import Mapa from './Mapa.jsx';
@@ -20,11 +22,15 @@ function App() {
   }
 
   function salvarNovaOcorrencia(novaOcorrencia) {
-    setOcorrenciasSalvas((prev) => [...prev, novaOcorrencia]);
+    setOcorrenciasSalvas((prev) => [
+      ...prev,
+      novaOcorrencia
+    ]);
   }
 
   return (
     <div className="aplicativo">
+
       <NavBar
         abaAtiva={abaAtiva}
         setAbaAtiva={trocarAba}
@@ -32,35 +38,59 @@ function App() {
       />
 
       <main className="conteudo-principal">
-        {abaAtiva === 'mapa' ? (
-          <section className="pagina-mapa">
-            <Mapa
-              marcadorTemporario={marcadorTemporario}
-              ocorrenciasSalvas={ocorrenciasSalvas}
-            />
-          </section>
-        ) : abaAtiva === 'bairro' ? (
-          <section className="pagina-bairro" style={{ padding: '100px 30px', color: '#fff' }}>
-            <h1>Meu bairro</h1>
-            <p>Acompanhe as ocorrências e os alertas registrados na sua região.</p>
-          </section>
-        ) : abaAtiva === 'mural' ? (
-          <Mural 
+
+        {/* Mapa permanece montado */}
+        <section
+          className={`pagina-mapa ${
+            abaAtiva !== 'mapa' ? 'pagina-oculta' : ''
+          }`}
+        >
+          <Mapa
+            marcadorTemporario={marcadorTemporario}
+            ocorrenciasSalvas={ocorrenciasSalvas}
+            visivel={abaAtiva === 'mapa'}
+          />
+        </section>
+
+        {/* Meu bairro */}
+        <section
+          className={`pagina-bairro ${
+            abaAtiva !== 'bairro' ? 'pagina-oculta' : ''
+          }`}
+        >
+          <h1>Meu bairro</h1>
+
+          <p>
+            Acompanhe as ocorrências e os alertas
+            registrados na sua região.
+          </p>
+        </section>
+
+        {/* Mural permanece montado */}
+        <section
+          className={`pagina-mural ${
+            abaAtiva !== 'mural' ? 'pagina-oculta' : ''
+          }`}
+        >
+          <Mural
             ocorrenciasSalvas={ocorrenciasSalvas}
             onSalvarOcorrencia={salvarNovaOcorrencia}
           />
-        ) : null}
+        </section>
+
       </main>
 
+      {/* Formulário */}
       <Formulario
         isOpen={mostrarFormulario}
         onClose={() => {
           setMostrarFormulario(false);
-          setMarcadorTemporario(null); // Limpa o temporário se fechar
+          setMarcadorTemporario(null);
         }}
         setMarcadorTemporario={setMarcadorTemporario}
         onSalvarOcorrencia={salvarNovaOcorrencia}
       />
+
     </div>
   );
 }

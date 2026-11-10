@@ -1,9 +1,12 @@
 
-.navbar-principal {
-  position: absolute; /* Torna a navbar flutuante sobre o conteúdo de trás */
-  top: 0;             /* Alinha no topo da tela */
-  left: 0;            /* Alinha no canto esquerdo */
-  z-index: 1000;      /* Garante que ela vai ficar na frente de qualquer outra imagem ou elemento */
+/* Navbar principal */
+
+.navbar-principal,
+.navbar-mural {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 
   width: 100%;
   height: 76px;
@@ -13,9 +16,10 @@
   align-items: center;
   gap: 15px;
 
-  background: transparent; /* Já estava correto! */
+  background: transparent;
   box-sizing: border-box;
 }
+
 /* Botão menu */
 
 .botao-menu {
@@ -168,7 +172,8 @@
 /* Responsividade */
 
 @media (max-width: 850px) {
-  .navbar-principal {
+  .navbar-principal,
+  .navbar-mural {
     gap: 8px;
     padding: 0 10px;
   }
@@ -193,7 +198,8 @@
     display: none;
   }
 
-  .navbar-principal {
+  .navbar-principal,
+  .navbar-mural {
     flex-wrap: wrap;
     height: auto;
     min-height: 70px;
