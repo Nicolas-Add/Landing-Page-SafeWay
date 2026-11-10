@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Formulario from './Formulario.jsx';
 import NavBar from './NavBar.jsx';
 import Mapa from './Mapa.jsx';
+import Mural from './Mural.jsx';
 
 function App() {
   const [abaAtiva, setAbaAtiva] = useState('mapa');
@@ -44,10 +45,10 @@ function App() {
             <p>Acompanhe as ocorrências e os alertas registrados na sua região.</p>
           </section>
         ) : abaAtiva === 'mural' ? (
-          <section className="pagina-mural" style={{ padding: '100px 30px', color: '#fff' }}>
-            <h1>Mural da comunidade</h1>
-            <p>Confira as informações e os avisos compartilhados pela comunidade.</p>
-          </section>
+          <Mural 
+            ocorrenciasSalvas={ocorrenciasSalvas}
+            onSalvarOcorrencia={salvarNovaOcorrencia}
+          />
         ) : null}
       </main>
 

@@ -1,0 +1,411 @@
+/* ============================================================
+   MURAL.CSS - Estilos otimizados e integrados ao index.css
+   ============================================================ */
+
+/* --- Container Principal do Mural --- */
+.sw {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100%;
+  width: 100%;
+  padding-top: 90px;
+}
+
+.sw main {
+  padding: 1rem 1.5rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* --- Botões e Pílulas Reutilizáveis --- */
+.sw .pill {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  color: var(--text-h);
+}
+
+.sw .pill.white {
+  background: var(--text-h);
+  color: var(--bg);
+  border-color: var(--text-h);
+}
+
+.sw .gradbtn {
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+}
+
+.sw .ico {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: transparent;
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  padding: 0;
+  color: var(--text-h);
+}
+
+.sw .avatar {
+  background: var(--accent);
+  border: 0;
+  color: #fff;
+}
+
+/* --- Cabeçalho Superior --- */
+.sw header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.5rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.sw header .sp {
+  flex: 1;
+}
+
+.sw .search {
+  flex: 1;
+  max-width: 340px;
+  min-width: 120px;
+  padding: 0;
+  background: var(--code-bg);
+}
+
+.sw .search input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-h);
+}
+
+/* --- Barra de Filtros --- */
+.sw .filterbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0.7rem 1rem;
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.sw .filterbar label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text);
+}
+
+.sw .filterbar select {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.78rem;
+  color: var(--text-h);
+}
+
+.sw h1.t {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 1rem 0 1.5rem;
+}
+
+/* --- Grid de Cards (Ocorrências) --- */
+.sw .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.2rem;
+}
+
+.sw .card {
+  position: relative;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: 16px;
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.sw .who {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+.sw .who i {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+
+.sw .meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--text);
+}
+
+.sw .tag {
+  border: 1px solid;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.sw .card p {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--text-h);
+  flex: 1;
+}
+
+.sw .chips {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.sw .chips span {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.72rem;
+  background: var(--code-bg);
+}
+
+.sw .unv { font-size: 0.7rem; color: #f59e0b; }
+.sw .vf { font-size: 0.7rem; color: #10b981; }
+
+.sw .empty {
+  text-align: center;
+  color: var(--text);
+  margin: 3rem 0;
+  grid-column: 1 / -1;
+}
+
+.sw .cbtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-h);
+}
+
+/* --- Seção de Comentários no Card --- */
+.sw .cm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.6rem;
+}
+
+.sw .cm .c {
+  background: var(--code-bg);
+  border-radius: 10px;
+  padding: 0.4rem 0.7rem;
+  color: var(--text-h);
+}
+
+.sw .cm small { color: var(--text); }
+
+.sw .cm .add {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+}
+
+.sw .cm .add input {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8rem;
+  color: var(--text-h);
+  outline: 0;
+}
+
+/* --- Painel Lateral & Formulário Flutuante --- */
+.sw .side,
+.sw .reg {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 40;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  padding: 1.2rem;
+  overflow-y: auto;
+  transition: transform 0.25s ease-in-out;
+  box-shadow: var(--shadow);
+}
+
+.sw .side {
+  left: 0;
+  width: min(300px, 88vw);
+  border-right: 1px solid var(--border);
+  transform: translateX(-105%);
+}
+
+.sw .reg {
+  right: 0;
+  width: min(400px, 100vw);
+  transform: translateX(105%);
+}
+
+.sw .side.on,
+.sw .reg.on {
+  transform: translateX(0);
+}
+
+.sw .scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 35;
+}
+
+.sw .reg h2 {
+  font-size: 1.2rem;
+  margin: 0.8rem 0 1rem;
+}
+
+.sw .reg .f {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--code-bg);
+  padding: 0.55rem 1rem;
+  margin: 0.55rem 0;
+  font-size: 0.82rem;
+  color: var(--text-h);
+  outline: 0;
+}
+
+.sw .reg textarea.f {
+  border-radius: 14px;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.sw .reg .types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+
+.sw .chip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.72rem;
+}
+
+.sw .chip.sel {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+}
+
+/* Toggle Switch */
+.sw button.tgl {
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  position: relative;
+  padding: 0;
+  flex: none;
+}
+
+.sw button.tgl::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-h);
+  transition: left 0.15s;
+}
+
+.sw button.tgl.on {
+  background: var(--accent);
+}
+
+.sw button.tgl.on::after {
+  left: 20px;
+  background: #fff;
+}
+
+.sw .acts {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.sw .acts button {
+  flex: 1;
+  justify-content: center;
+}
+
+/* Toast Notificação */
+.sw .toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  background: var(--text-h);
+  color: var(--bg);
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  z-index: 60;
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 720px) {
+  .sw .hideS { display: none; }
+  .sw header { padding: 0.6rem 1rem; }
+}

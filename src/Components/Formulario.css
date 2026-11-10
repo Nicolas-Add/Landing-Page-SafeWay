@@ -1,197 +1,256 @@
-/* ==========================================
-   PAINEL LATERAL (DRAWER / PUXADINHO)
-   ========================================== */
+/* ============================================================
+   FORMULARIO.CSS - Estilos do Painel Lateral e Registro
+   ============================================================ */
 
-/* Fundo escuro translúcido atrás do painel quando aberto */
+/* Fundo transparente atrás do painel flutuante */
 .drawer-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: transparent; /* Inicialmente transparente */
-  transition: background 0.3s ease-in-out;
+  background: transparent;
   z-index: 999;
 }
 
-/* Container principal do painel (escondido fora da tela à direita) */
+/* Container do Painel Lateral (Drawer) */
 .drawer-container {
   position: fixed;
   top: 0;
   right: 0;
   width: 420px;
-  max-width: 90vw;
+  max-width: 95vw;
   height: 100vh;
-  background-color: #1e1e20; /* Cor escura idêntica à do seu layout */
+  background-color: #1e1e20;
   border-top-left-radius: 24px;
   border-bottom-left-radius: 24px;
   padding: 24px;
   box-sizing: border-box;
   z-index: 1000;
   overflow-y: auto;
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
 
   /* Efeito de deslizar suave */
   transform: translateX(100%);
   transition: transform 0.3s ease-in-out;
 }
 
-/* Quando ganha a classe 'open', o painel desliza para dentro da tela */
+/* Estado Aberto */
 .drawer-container.open {
   transform: translateX(0);
 }
 
-/* Botão de voltar dentro do painel */
-.drawer-container .back-btn {
+/* Botão Voltar Superior */
+.back-btn {
   background: none;
   border: none;
   color: #aaa;
   font-size: 14px;
   cursor: pointer;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
   gap: 6px;
+  padding: 0;
+  transition: color 0.2s;
 }
 
-.drawer-container .back-btn:hover {
+.back-btn:hover {
   color: #fff;
 }
 
-
-/* ==========================================
-   ESTILOS DO FORMULÁRIO DE OCORRÊNCIA
-   ========================================== */
-
+/* Estrutura do Formulario */
 .form-ocorrencia {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .form-ocorrencia h2 {
-  color: #fff;
-  font-size: 40px;
-  margin-bottom: 10px;
   text-transform: uppercase;
-  text-align: start;
-  width: min-content;  /* Força uma palavra por linha */
-  line-height: 1;
-
-}
-
-.form-ocorrencia label {
-  color: #ddd;
-  font-size: 14px;
-  margin-top: 6px;
-}
-
-.form-ocorrencia input[type="text"],
-.form-ocorrencia input[type="date"],
-.form-ocorrencia select,
-.form-ocorrencia textarea {
-  background: #121214;
-  border: 1px solid #333;
-  border-radius: 20px;
-  padding: 10px 16px;
   color: #fff;
-  font-size: 14px;
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 4px 0 12px 0;
+  text-align: left;
+  line-height: 1
+}
+
+.form-ocorrencia label,
+.form-ocorrencia .lbl {
+  color: #ccc;
+  font-size: 0.82rem;
+  margin-top: 4px;
+}
+
+/* Campos de Entrada (Inputs, Textarea e Select) */
+.form-ocorrencia .f {
+  display: block;
   width: 100%;
+  border: 1px solid #333;
+  border-radius: 999px;
+  background: #121214;
+  padding: 0.55rem 1rem;
+  margin: 0.3rem 0;
+  font-size: 0.82rem;
+  color: #fff;
+  outline: 0;
   box-sizing: border-box;
-  outline: none;
-  transition: border-color 0.2s;
+}
+
+.form-ocorrencia textarea.f {
+  border-radius: 16px;
+  resize: vertical;
+  min-height: 70px;
+}
+
+.form-ocorrencia input[type="file"].f {
+  padding: 0.4rem 1rem;
+  color: #aaa;
 }
 
 .form-ocorrencia input:focus,
-.form-ocorrencia select:focus,
-.form-ocorrencia textarea:focus {
-  border-color: #7c3aed; /* Cor de destaque ao focar (roxo) */
+.form-ocorrencia textarea:focus,
+.form-ocorrencia select:focus {
+  border-color: #8539d9;
 }
 
-.form-ocorrencia textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-/* Estilização para o input de arquivo (upload de imagem) */
-.form-ocorrencia input[type="file"] {
-  color: #aaa;
-  padding: 8px 0;
-  font-size: 13px;
-}
-
-.imagem-selecionada {
-  color: #4ade80; /* Verde claro indicando sucesso */
-  font-size: 13px;
-  margin: 4px 0;
-}
-
-.aviso-privacidade {
-  color: #a1a1aa;
-  font-size: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 10px;
-  border-radius: 12px;
-  border-left: 3px solid #f59e0b; /* Alerta em amarelo */
-  margin: 8px 0;
-  line-height: 1.4;
-}
-
-
-/* ==========================================
-   BOTÕES DE AÇÃO INFERIORES
-   ========================================== */
-
-.form-actions {
+/* Linha de Alternância (Ocultar Nome com Switch Toggle) */
+.hide {
   display: flex;
-  gap: 12px;
-  margin-top: 20px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: #ccc;
+  margin: 0.3rem 0;
+  padding: 0 4px;
 }
 
-.form-actions .btn-primary {
-  flex: 1;
-  background: #fff;
-  color: #111;
-  font-weight: bold;
-  border: none;
-  border-radius: 20px;
-  padding: 12px;
+button.tgl {
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: #333;
+  border: 1px solid #555;
+  position: relative;
+  padding: 0;
   cursor: pointer;
   transition: background 0.2s;
 }
 
-.form-actions .btn-primary:hover {
+button.tgl::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: left 0.15s;
+}
+
+button.tgl.on {
+  background: #8539d9;
+}
+
+button.tgl.on::after {
+  left: 20px;
+}
+
+/* Chips de Seleção de Categorias/Tipos */
+.types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 8px 0;
+}
+
+.chip {
+  border: 1px solid;
+  border-radius: 999px;
+  background: transparent;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chip.sel {
+  background: rgba(133, 57, 217, 0.2);
+  box-shadow: 0 0 0 1px currentColor;
+}
+
+/* Nota Informativa */
+.note {
+  font-size: 0.7rem;
+  color: #888;
+  margin: 4px 0 12px 0;
+  line-height: 1.3;
+}
+
+/* Botões Inferiores (Ações de Excluir e Registrar) */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn-primary {
+  flex: 1;
+  background: #fff;
+  color: #000;
+  font-weight: 500;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
   background: #e4e4e7;
 }
 
-.form-actions .btn-secondary {
+.btn-secondary {
   flex: 1;
   background: transparent;
   color: #fff;
-  border: 1px solid #555;
-  border-radius: 20px;
-  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 999px;
+  padding: 0.6rem;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s;
 }
 
-.form-actions .btn-secondary:hover {
-  background: rgba(245, 20, 20, 0.05);
-  border-color: #888;
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
+/* Botão do Buscar Endereço */
 .btn-buscar {
-  background: #7c3aed; /* Altere aqui a cor de fundo (ex: roxo) */
-  color: #fff;         /* Cor do texto */
+  background: #8539d9;
+  color: #fff;
   border: none;
-  border-radius: 20px;
-  padding: 10px 18px;
-  font-size: 14px;
-  font-weight: 500;
+  border-radius: 999px;
+  padding: 0 16px;
+  font-size: 0.8rem;
   cursor: pointer;
   white-space: nowrap;
+  height: 38px;
+  margin-top: 0.3rem;
   transition: background 0.2s;
 }
 
 .btn-buscar:hover {
-  background: #6d28d9; /* Cor ao passar o mouse */
+  background: #7025bd;
+}
+
+/* Responsividade para Ecrãs Pequenos */
+@media (max-width: 480px) {
+  .drawer-container {
+    width: 100vw;
+    border-radius: 0;
+    padding: 16px;
+  }
 }

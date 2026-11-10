@@ -1,20 +1,28 @@
 import { useState } from "react";
 import "./Formulario.css";
 
-function Formulario({ isOpen, onClose, setMarcadorTemporario, onSalvarOcorrencia }) {
-  const hoje = new Date();
-  const ano = hoje.getFullYear();
-  const mes = String(hoje.getMonth() + 1).padStart(2, "0");
-  const dia = String(hoje.getDate()).padStart(2, "0");
-  const data_atual = `${ano}-${mes}-${dia}`;
+const CATS = {
+  obras: ["Obras e infraestrutura", "#f0643c"],
+  serv: ["Serviços Urbanos", "#cfcfcf"],
+  saude: ["Saúde e Assistência", "#34d399"],
+  defesa: ["Defesa civil e alertas", "#3b82f6"],
+  eventos: ["Eventos e Cultura", "#e5e5e5"],
+};
 
+const BAIRROS = {
+  Canoas: ["Mathias Velho", "Niterói", "Igara", "Estância Velha", "Centro"],
+  "Porto Alegre": ["Centro Histórico", "Cidade Baixa"],
+};
+
+const norm = (t) => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+function Formulario({ isOpen, onClose, setMarcadorTemporario, onSalvarOcorrencia }) {
   const [nome, setNome] = useState("");
+  const [oculto, setOculto] = useState(false);
   const [local, setLocal] = useState("");
   const [data, setData] = useState("");
-  const [descricao, setDescricao] = useState("");
-  const [tipoDeRisco, setTipoDeRisco] = useState("Obras e Infraestrutura");
-  const [outroRisco, setOutroRisco] = useState("");
-  const [imagem, setImagem] = useState(null);
+  const [tipo, setTipo] = useState("");
+  const [desc, setDesc] = useState("");
   const [fonte, setFonte] = useState("");
   const [coordenadasTemp, setCoordenadasTemp] = useState(null);
 
@@ -35,7 +43,7 @@ function Formulario({ isOpen, onClose, setMarcadorTemporario, onSalvarOcorrencia
           endereco: dados[0].display_name,
         };
         setCoordenadasTemp(coords);
-        setMarcadorTemporario(coords); // Move o mapa e exibe o pin temporário
+        if (setMarcadorTemporario) setMarcadorTemporario(coords);
       } else {
         alert("Endereço não encontrado no mapa.");
       }
@@ -47,31 +55,52 @@ function Formulario({ isOpen, onClose, setMarcadorTemporario, onSalvarOcorrencia
   function enviarFormulario(event) {
     event.preventDefault();
 
-    if (!coordenadasTemp) {
-      alert("Por favor, busque e selecione um local válido no mapa clicando em 'Buscar'.");
+    if (!tipo) {
+      alert("Selecione o tipo do ocorrido.");
       return;
     }
 
-    if (data > data_atual) {
-      alert("A data não pode ser maior que a data atual!");
+    if (!desc.trim()) {
+      alert("Escreva uma descrição para a ocorrência.");
       return;
     }
 
-    const riscoFinal = tipoDeRisco === "Outro" ? outroRisco.trim() : tipoDeRisco;
+    const loc = local.trim();
+    const bairro = Object.values(BAIRROS).flat().find((b) => norm(loc).includes(norm(b))) || loc || "Centro";
+    const cidade = Object.keys(BAIRROS).find((c) => BAIRROS[c].includes(bairro)) || "Canoas";
 
     const novaOcorrencia = {
-      nome,
+      id: Date.now(),
+      nome: nome.trim() || "Usuário",
+      oculto,
       local,
-      lat: coordenadasTemp.lat,
-      lng: coordenadasTemp.lng,
-      tipoDeRisco: riscoFinal,
-      data,
-      descricao,
+      lat: coordenadasTemp ? coordenadasTemp.lat : null,
+      lng: coordenadasTemp ? coordenadasTemp.lng : null,
+      tipo,
+      cidade,
+      bairro,
+      ts: data ? new Date(data).getTime() : Date.now(),
+      desc: desc.trim(),
+      fonte: fonte.trim(),
+      mine: true,
+      comments: [],
     };
 
-    onSalvarOcorrencia(novaOcorrencia); // Salva definitivamente
-    setMarcadorTemporario(null);
+    onSalvarOcorrencia(novaOcorrencia);
+    if (setMarcadorTemporario) setMarcadorTemporario(null);
+    limparCampos();
     onClose();
+  }
+
+  function limparCampos() {
+    setNome("");
+    setOculto(false);
+    setLocal("");
+    setData("");
+    setTipo("");
+    setDesc("");
+    setFonte("");
+    setCoordenadasTemp(null);
   }
 
   return (
@@ -80,7 +109,7 @@ function Formulario({ isOpen, onClose, setMarcadorTemporario, onSalvarOcorrencia
 
       <aside className={`drawer-container ${isOpen ? "open" : ""}`}>
         <button type="button" className="back-btn" onClick={onClose}>
-          Voltar &larr;
+          Voltar ◂
         </button>
 
         <form className="form-ocorrencia" onSubmit={enviarFormulario}>
@@ -89,61 +118,98 @@ function Formulario({ isOpen, onClose, setMarcadorTemporario, onSalvarOcorrencia
           <label htmlFor="nome">Nome:</label>
           <input
             id="nome"
+            className="f"
             type="text"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-            required
+            placeholder="Seu nome..."
           />
+
+          <div className="hide">
+            <span>Ocultar nome:</span>
+            <button
+              type="button"
+              className={"tgl" + (oculto ? " on" : "")}
+              onClick={() => setOculto(!oculto)}
+              aria-label="Ocultar nome"
+            />
+          </div>
 
           <label htmlFor="local">Local:</label>
           <div style={{ display: "flex", gap: "8px" }}>
             <input
               id="local"
+              className="f"
               type="text"
               value={local}
               onChange={(e) => setLocal(e.target.value)}
               placeholder="Digite o endereço..."
               required
+              style={{ margin: 0 }}
             />
             <button type="button" onClick={buscarEndereco} className="btn-buscar">
               Buscar
             </button>
           </div>
 
-          <label htmlFor="tipoRisco">Tipo de risco:</label>
-          <select
-            id="tipoRisco"
-            value={tipoDeRisco}
-            onChange={(e) => setTipoDeRisco(e.target.value)}
-          >
-            <option value="Obras e Infraestrutura">Obras e Infraestrutura</option>
-            <option value="Serviços Urbanos">Serviços Urbanos</option>
-            <option value="Saúde e Assistência">Saúde e Assistência</option>
-            <option value="Defesa civil e alertas">Defesa civil e alertas</option>
-            <option value="Eventos e Cultura">Eventos e Cultura</option>
-            <option value="Outro">Outro</option>
-          </select>
-
           <label htmlFor="data">Data:</label>
           <input
             id="data"
-            type="date"
+            className="f"
+            type="datetime-local"
             value={data}
-            max={data_atual}
             onChange={(e) => setData(e.target.value)}
-            required
           />
+
+          <div className="lbl">Selecione o tipo do ocorrido:</div>
+          <div className="types">
+            {Object.entries(CATS).map(([k, [n, c]]) => (
+              <button
+                key={k}
+                type="button"
+                className={"chip" + (tipo === k ? " sel" : "")}
+                style={{ color: c, borderColor: c }}
+                onClick={() => setTipo(k)}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
 
           <label htmlFor="descricao">Descrição:</label>
           <textarea
             id="descricao"
-            value={descricao}
-            onChange={(e) => setDescricao(e.target.value)}
+            className="f"
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+            placeholder="Descreva o ocorrido..."
             required
           />
 
+          <label htmlFor="imagem">Adicionar Imagem (Opcional):</label>
+          <input
+            id="imagem"
+            className="f"
+            type="file"
+            accept="image/*"
+          />
+
+          <label htmlFor="fonte">Fonte (Opcional):</label>
+          <input
+            id="fonte"
+            className="f"
+            type="text"
+            value={fonte}
+            onChange={(e) => setFonte(e.target.value)}
+            placeholder="Link ou origem..."
+          />
+
+          <div className="note">
+            Se não houver fonte a mensagem receberá o selo de não verificada!
+          </div>
+
           <div className="form-actions">
-            <button type="button" className="btn-secondary" onClick={onClose}>
+            <button type="button" className="btn-secondary" onClick={limparCampos}>
               Excluir
             </button>
             <button type="submit" className="btn-primary">
