@@ -7,7 +7,6 @@
   top: 0;
   left: 0;
   z-index: 1000;
-
   width: 100%;
   height: 76px;
   padding: 0 25px;
@@ -37,16 +36,9 @@
   width: 310px;
   height: 40px;
   padding: 0 20px;
-
   border: 1px solid #8539d9;
   border-radius: 30px;
-
-  background: linear-gradient(
-    110deg,
-    #000000 65%,
-    #7824cf
-  );
-
+  background: linear-gradient(110deg, #000000 65%, #7824cf);
   color: white;
   outline: none;
 }
@@ -61,16 +53,9 @@
   height: 40px;
   min-width: 125px;
   padding: 0 20px;
-
   border: 1px solid #8539d9;
   border-radius: 30px;
-
-  background: linear-gradient(
-    110deg,
-    #000000 65%,
-    #7824cf
-  );
-
+  background: linear-gradient(110deg, #000000 65%, #7824cf);
   color: white;
   cursor: pointer;
   transition: 0.3s;
@@ -78,11 +63,7 @@
 
 .nav-item:hover,
 .nav-item.ativo {
-  background: linear-gradient(
-    110deg,
-    #25103d,
-    #8735df
-  );
+  background: linear-gradient(110deg, #25103d, #8735df);
 }
 
 /* Botão adicionar */
@@ -90,14 +71,13 @@
 .botao-adicionar {
   width: 40px;
   height: 40px;
-
   border: 1px solid #8539d9;
   border-radius: 50%;
-
   background: #050505;
   color: white;
   font-size: 25px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .botao-adicionar:hover {
@@ -115,23 +95,16 @@
 .botao-registrar {
   height: 40px;
   padding: 0 20px;
-
   display: flex;
   align-items: center;
   gap: 12px;
-
   border: 1px solid #8539d9;
   border-radius: 30px;
-
-  background: linear-gradient(
-    110deg,
-    #000000 65%,
-    #7824cf
-  );
-
+  background: linear-gradient(110deg, #000000 65%, #7824cf);
   color: white;
   font-weight: bold;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .botao-registrar span {
@@ -147,18 +120,16 @@
 .botao-perfil {
   width: 40px;
   height: 40px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   border: 1px solid #8539d9;
   border-radius: 50%;
-
   background: #050505;
   color: white;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .botao-perfil span:first-child {
@@ -167,6 +138,12 @@
 
 .botao-perfil span:last-child {
   font-size: 14px;
+}
+
+.botao-perfil:hover,
+.botao-perfil.ativo {
+  background: linear-gradient(135deg, #25103d, #8735df);
+  border-color: #c59dff;
 }
 
 /* Responsividade */

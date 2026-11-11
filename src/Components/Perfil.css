@@ -1,0 +1,478 @@
+
+/* ==============================
+   PÁGINA DE PERFIL
+============================== */
+
+.pagina-perfil {
+  width: 100%;
+  min-height: 100%;
+  padding: 175px 5.5% 60px;
+  box-sizing: border-box;
+  background: var(--bg);
+  color: #fff;
+  overflow-y: auto;
+}
+
+.perfil-container {
+  width: 100%;
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+/* ==============================
+   ÁREA SUPERIOR
+============================== */
+
+.perfil-superior {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 35px;
+  align-items: start;
+}
+
+/* Avatar */
+
+.perfil-avatar-area {
+  position: relative;
+  width: 216px;
+  height: 216px;
+  margin: 7px auto 0;
+}
+
+.perfil-avatar {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #7026b9;
+}
+
+.perfil-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.perfil-avatar svg {
+  width: 65%;
+  height: 65%;
+  fill: #fff;
+}
+
+.perfil-alterar-foto {
+  position: absolute;
+  top: 6px;
+  left: 12px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #c18aff;
+  color: #fff;
+  font-size: 23px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.perfil-alterar-foto:hover {
+  background: #8735df;
+  transform: scale(1.08);
+}
+
+.perfil-alterar-foto input {
+  display: none;
+}
+
+/* Informações */
+
+.perfil-dados {
+  width: 100%;
+  min-width: 0;
+}
+
+.perfil-nome-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 45px;
+}
+
+.perfil-nome-linha h1 {
+  margin: 0;
+  font-size: clamp(50px, 3vw, 50px);
+  font-weight: 400;
+  overflow-wrap: anywhere;
+  font-weight: bold;
+}
+
+.perfil-editar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.perfil-editar span {
+  font-size: 23px;
+}
+
+.perfil-editar:hover {
+  color: #c18aff;
+}
+
+/* Cidade, bairro e e-mail */
+
+.perfil-informacoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.perfil-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.perfil-campo strong {
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.perfil-campo span {
+  min-height: 40px;
+  padding: 8px 14px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #fff;
+  border-radius: 30px;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.perfil-campo-email span {
+  min-width: 250px;
+  justify-content: flex-start;
+  overflow-wrap: anywhere;
+}
+
+/* ==============================
+   NOTIFICAÇÕES
+============================== */
+
+.perfil-notificacoes {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.perfil-toggle {
+  width: 43px;
+  height: 24px;
+  padding: 2px;
+  border: 1px solid #fff;
+  border-radius: 20px;
+  background: #222;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.perfil-toggle span {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: 0.3s;
+}
+
+.perfil-toggle.ligado {
+  background: #7026b9;
+  border-color: #c18aff;
+}
+
+.perfil-toggle.ligado span {
+  transform: translateX(18px);
+}
+
+/* ==============================
+   FORMULÁRIO DE EDIÇÃO
+============================== */
+
+.perfil-form-edicao {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 650px;
+}
+
+.perfil-form-edicao label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 14px;
+}
+
+.perfil-form-edicao input {
+  width: 100%;
+  height: 40px;
+  padding: 0 13px;
+  box-sizing: border-box;
+  border: 1px solid #8735df;
+  border-radius: 25px;
+  outline: none;
+  background: #101010;
+  color: #fff;
+}
+
+.perfil-form-edicao input:focus {
+  border-color: #c18aff;
+}
+
+.perfil-salvar {
+  min-height: 40px;
+  align-self: end;
+  border: 1px solid #8735df;
+  border-radius: 25px;
+  background: linear-gradient(110deg, #000, #7026b9);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.perfil-salvar:hover {
+  background: #8735df;
+}
+
+/* ==============================
+   BOTÃO SAIR
+============================== */
+
+.perfil-sair {
+  min-width: 98px;
+  height: 40px;
+  margin-top: 25px;
+  padding: 0 17px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid #8735df;
+  border-radius: 30px;
+  background: linear-gradient(110deg, #000, #7026b9);
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.perfil-sair span {
+  font-size: 21px;
+}
+
+.perfil-sair:hover {
+  background: #8735df;
+}
+
+/* ==============================
+   MINHAS OCORRÊNCIAS
+============================== */
+
+.perfil-ocorrencias-area {
+  margin-top: 25px;
+  
+}
+
+.perfil-ocorrencias-area h2 {
+  margin: 0 0 18px 35px;
+  font-size: clamp(24px, 3vw, 28px);
+  line-height: 1.05;
+  font-weight: 400;
+  font-weight: bold;
+}
+
+.perfil-lista-ocorrencias {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.perfil-card-ocorrencia {
+  width: 100%;
+  min-height: 135px;
+  padding: 16px 35px;
+  box-sizing: border-box;
+  border: 1px solid #8735df;
+  border-radius: 28px;
+  background:
+    linear-gradient(
+      100deg,
+      #000 65%,
+      #351064 82%,
+      #8735df 100%
+    );
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+.perfil-card-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.perfil-data {
+  font-size: 13px;
+}
+
+.perfil-categoria {
+  padding: 5px 12px;
+  border: 1px solid #fff;
+  border-radius: 20px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.perfil-card-ocorrencia p {
+  margin: 0;
+  max-width: 850px;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.perfil-local {
+  color: #d7b8ff;
+  font-size: 13px;
+}
+
+.perfil-sem-ocorrencias {
+  min-height: 100px;
+  padding: 25px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  border: 1px solid #8735df;
+  border-radius: 28px;
+  color: #ccc;
+  background: linear-gradient(100deg, #000 65%, #351064);
+}
+
+/* ==============================
+   RESPONSIVIDADE
+============================== */
+
+@media (max-width: 850px) {
+  .pagina-perfil {
+    padding: 145px 25px 40px;
+  }
+
+  .perfil-superior {
+    grid-template-columns: 190px 1fr;
+    gap: 25px;
+  }
+
+  .perfil-avatar-area {
+    width: 170px;
+    height: 170px;
+  }
+
+  .perfil-nome-linha {
+    margin-bottom: 30px;
+  }
+
+  .perfil-informacoes {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pagina-perfil {
+    padding: 145px 16px 35px;
+  }
+
+  .perfil-superior {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .perfil-avatar-area {
+    width: 150px;
+    height: 150px;
+  }
+
+  .perfil-nome-linha {
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+  }
+
+  .perfil-nome-linha h1 {
+    font-size: 29px;
+  }
+
+  .perfil-informacoes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .perfil-campo-email {
+    grid-column: 1 / -1;
+  }
+
+  .perfil-campo-email span {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .perfil-notificacoes {
+    font-size: 13px;
+  }
+
+  .perfil-form-edicao {
+    grid-template-columns: 1fr;
+  }
+
+  .perfil-ocorrencias-area {
+    margin-top: 40px;
+  }
+
+  .perfil-ocorrencias-area h2 {
+    margin-left: 10px;
+    font-size: 32px;
+  }
+
+  .perfil-card-ocorrencia {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .perfil-card-topo {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

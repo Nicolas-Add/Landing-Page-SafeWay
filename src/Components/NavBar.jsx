@@ -1,14 +1,17 @@
 
 import './Navbar.css';
 
-function NavBar({ abaAtiva, setAbaAtiva, onRegistrar }) {
+function NavBar({
+  abaAtiva,
+  setAbaAtiva,
+  onRegistrar,
+  onPerfil
+}) {
 
-  // Navbar específica da aba Mural
   if (abaAtiva === 'mural') {
     return (
       <nav className="navbar-mural">
 
-        {/* Menu e pesquisa */}
         <button className="botao-menu" aria-label="Abrir menu">
           ☰
         </button>
@@ -19,7 +22,6 @@ function NavBar({ abaAtiva, setAbaAtiva, onRegistrar }) {
           placeholder="Pesquisar..."
         />
 
-        {/* Botão para voltar ao mapa */}
         <button
           className="nav-item ativo"
           onClick={() => setAbaAtiva('mapa')}
@@ -27,7 +29,6 @@ function NavBar({ abaAtiva, setAbaAtiva, onRegistrar }) {
           Mapa
         </button>
 
-        {/* Adicionar ocorrência */}
         <button
           className="botao-adicionar"
           onClick={onRegistrar}
@@ -38,7 +39,6 @@ function NavBar({ abaAtiva, setAbaAtiva, onRegistrar }) {
 
         <div className="navbar-espacador"></div>
 
-        {/* Registrar ocorrência */}
         <button
           className="botao-registrar"
           onClick={onRegistrar}
@@ -47,8 +47,11 @@ function NavBar({ abaAtiva, setAbaAtiva, onRegistrar }) {
           <span>⚠</span>
         </button>
 
-        {/* Perfil */}
-        <button className="botao-perfil" aria-label="Perfil">
+        <button
+          className="botao-perfil"
+          onClick={onPerfil}
+          aria-label="Abrir perfil"
+        >
           <span>●</span>
           <span>▬</span>
         </button>
@@ -57,13 +60,69 @@ function NavBar({ abaAtiva, setAbaAtiva, onRegistrar }) {
     );
   }
 
-  
+  if (abaAtiva === 'perfil') {
+    return (
+      <nav className="navbar-mural">
 
-  // Navbar padrão
+        <button className="botao-menu" aria-label="Abrir menu">
+          ☰
+        </button>
+
+        <input
+          type="text"
+          className="pesquisa"
+          placeholder="Pesquisar..."
+        />
+
+        <button
+          className="nav-item ativo"
+          onClick={() => setAbaAtiva('mapa')}
+        >
+          Mapa
+        </button>
+
+        <button
+        className={`nav-item ${abaAtiva === 'mural' ? 'ativo' : ''}`}
+        onClick={() => setAbaAtiva('mural')}
+        >
+        Mural
+        </button>
+
+
+        <button
+          className="botao-adicionar"
+          onClick={onRegistrar}
+          aria-label="Adicionar ocorrência"
+        >
+          +
+        </button>
+
+        <div className="navbar-espacador"></div>
+
+        <button
+          className="botao-registrar"
+          onClick={onRegistrar}
+        >
+          Registrar Ocorrência
+          <span>⚠</span>
+        </button>
+
+        <button
+          className="botao-perfil"
+          onClick={onPerfil}
+          aria-label="Abrir perfil"
+        >
+          <span>●</span>
+          <span>▬</span>
+        </button>
+
+      </nav>
+    );
+  }
+
   return (
     <nav className="navbar-principal">
 
-      {/* Menu e pesquisa */}
       <button className="botao-menu" aria-label="Abrir menu">
         ☰
       </button>
@@ -74,7 +133,6 @@ function NavBar({ abaAtiva, setAbaAtiva, onRegistrar }) {
         placeholder="Pesquisar..."
       />
 
-      {/* Navegação */}
       <button
         className={`nav-item ${abaAtiva === 'bairro' ? 'ativo' : ''}`}
         onClick={() => setAbaAtiva('bairro')}
@@ -89,7 +147,6 @@ function NavBar({ abaAtiva, setAbaAtiva, onRegistrar }) {
         Mural
       </button>
 
-      {/* Adicionar ocorrência */}
       <button
         className="botao-adicionar"
         onClick={onRegistrar}
@@ -100,7 +157,6 @@ function NavBar({ abaAtiva, setAbaAtiva, onRegistrar }) {
 
       <div className="navbar-espacador"></div>
 
-      {/* Registrar ocorrência */}
       <button
         className="botao-registrar"
         onClick={onRegistrar}
@@ -109,8 +165,11 @@ function NavBar({ abaAtiva, setAbaAtiva, onRegistrar }) {
         <span>⚠</span>
       </button>
 
-      {/* Perfil */}
-      <button className="botao-perfil" aria-label="Perfil">
+      <button
+        className={`botao-perfil ${abaAtiva === 'perfil' ? 'ativo' : ''}`}
+        onClick={onPerfil}
+        aria-label="Abrir perfil"
+      >
         <span>●</span>
         <span>▬</span>
       </button>
