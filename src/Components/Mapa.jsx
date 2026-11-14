@@ -1,5 +1,4 @@
-
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   MapContainer,
@@ -13,6 +12,7 @@ import L from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
 import './Mapa.css';
+import { useIdioma, LOCALES } from './i18n.js';
 
 // Posição inicial: Canoas - RS
 const POSICAO_PADRAO = [-29.9178, -51.1794];
@@ -115,30 +115,57 @@ function AtualizarTamanhoMapa({ visivel }) {
 }
 
 // Formata a data da ocorrência
-function formatarData(timestamp) {
+function localSemDuplicar(local, bairro, cidade) {
+  const partes = String(local || '')
+    .split(',')
+    .map((parte) => parte.trim())
+    .filter(Boolean);
+
+  const normalizar = (valor) => String(valor || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+
+  const removidos = [bairro, cidade].filter(Boolean).map(normalizar);
+  const unicos = partes.filter((parte, indice) => {
+    const chave = normalizar(parte);
+    return !removidos.includes(chave) &&
+      partes.findIndex((item) => normalizar(item) === chave) === indice;
+  });
+
+  return unicos.join(', ');
+}
+
+function formatarData(timestamp, idioma = 'pt', t = (c) => c) {
   if (!timestamp) {
-    return 'Data não informada';
+    return t('c.noDate');
   }
 
   const data = new Date(timestamp);
 
   if (Number.isNaN(data.getTime())) {
-    return 'Data não informada';
+    return t('c.noDate');
   }
 
-  return data.toLocaleString('pt-BR', {
+  return data.toLocaleString(LOCALES[idioma] || 'pt-BR', {
     dateStyle: 'short',
     timeStyle: 'short'
   });
 }
 
 // Cartão exibido ao clicar no marcador
-function CartaoOcorrencia({ item }) {
+function CartaoOcorrencia({ item, salvo, onAlternarSalvo }) {
+  const { t, idioma } = useIdioma();
+
   const categoria = CATEGORIAS[item.tipo] || {
     nome: 'Outros',
     cor: '#9ca3af',
     emoji: '📍'
   };
+  const nomeCategoria = CATEGORIAS[item.tipo]
+    ? t('cat.' + item.tipo)
+    : t('cat.other');
 
   return (
     <div className="popup-ocorrencia">
@@ -151,56 +178,173 @@ function CartaoOcorrencia({ item }) {
         </span>
 
         <div className="popup-titulo">
-          <strong>{categoria.nome}</strong>
+          <strong>{nomeCategoria}</strong>
 
           <span className="popup-data">
-            {formatarData(item.ts)}
+            {formatarData(item.ts, idioma, t)}
           </span>
         </div>
       </div>
 
       <div className="popup-conteudo">
         <div className="popup-campo">
-          <strong>Localização</strong>
-          <p>{item.local || 'Local não informado'}</p>
+          <strong>{t('p.location')}</strong>
+          <p>{localSemDuplicar(item.local, item.bairro, item.cidade) || t('p.noLocation')}</p>
         </div>
 
         <div className="popup-campo">
-          <strong>Descrição</strong>
-          <p>{item.desc || 'Sem descrição'}</p>
+          <strong>{t('p.description')}</strong>
+          <p>{item.desc || t('p.noDescription')}</p>
         </div>
 
         <div className="popup-campo">
-          <strong>Fonte da informação</strong>
-          <p>{item.fonte || 'Não informada'}</p>
+          <strong>{t('p.source')}</strong>
+          <p>{item.fonte || t('c.notInformedF')}</p>
         </div>
 
         <div className="popup-campo">
-          <strong>Bairro</strong>
-          <p>{item.bairro || 'Não informado'}</p>
+          <strong>{t('p.neighborhood')}</strong>
+          <p>{item.bairro || t('c.notInformedM')}</p>
+        </div>
+
+        <div className="popup-campo">
+          <strong>{t('p.city')}</strong>
+          <p>{item.cidade || t('c.notInformedF')}</p>
         </div>
       </div>
+
+      <button type="button" className="popup-salvar" onClick={() => onAlternarSalvo?.(item.id)}>
+        {salvo ? t('p.unsave') : t('p.save')}
+      </button>
 
       <div
         className={`popup-status ${
           item.fonte ? 'fonte-informada' : 'nao-verificado'
         }`}
       >
-        {item.fonte ? 'Fonte informada' : 'Não verificada'}
+        {item.fonte ? t('p.sourceGiven') : t('c.unverified')}
       </div>
     </div>
   );
 }
 
 // Componente principal
+function CentralizarBairro({ bairro, cidade, ativar, foco }) {
+  const map = useMap();
+  useEffect(() => {
+    if (!ativar || !bairro?.trim()) return;
+    const controller = new AbortController();
+    const buscar = async () => {
+      try {
+        const consulta = encodeURIComponent(`${bairro}, ${cidade || 'Canoas'}, RS, Brasil`);
+        const resposta = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&q=${consulta}&limit=1&countrycodes=br`, { signal: controller.signal });
+        if (!resposta.ok) return;
+        const dados = await resposta.json();
+        if (dados[0]) {
+          map.invalidateSize({ animate: false });
+          map.flyTo([Number(dados[0].lat), Number(dados[0].lon)], 15, { animate: true, duration: 1.2 });
+        }
+      } catch (erro) {
+        if (erro.name !== 'AbortError') console.error('Erro ao localizar bairro:', erro);
+      }
+    };
+    buscar();
+    return () => controller.abort();
+  }, [bairro, cidade, ativar, foco, map]);
+  return null;
+}
+
+function normalizar(texto) {
+  return String(texto || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+}
+
+// Bairro bate com o nome salvo, ou com alguma parte do endereço da ocorrência
+function correspondeBairro(item, bairro) {
+  const alvo = normalizar(bairro);
+  const partes = [
+    item.bairro,
+    ...String(item.local || '').split(','),
+    ...String(item.endereco || '').split(',')
+  ].map(normalizar);
+  return partes.includes(alvo);
+}
+
+// Pesquisa da navbar: procura uma rua/endereço e leva o mapa até lá
+function BuscarEndereco({ busca, cidade, onResultado }) {
+  const map = useMap();
+  const { t } = useIdioma();
+
+  useEffect(() => {
+    if (!busca?.texto) {
+      onResultado(null);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    async function procurar(consulta) {
+      const resposta = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=jsonv2&q=${encodeURIComponent(consulta)}&limit=1&countrycodes=br`,
+        { signal: controller.signal }
+      );
+      if (!resposta.ok) return null;
+      const dados = await resposta.json();
+      return dados[0] || null;
+    }
+
+    (async () => {
+      try {
+        const achado =
+          (await procurar(`${busca.texto}, ${cidade || 'Canoas'}, RS, Brasil`)) ||
+          (await procurar(`${busca.texto}, RS, Brasil`));
+
+        if (!achado) {
+          onResultado(null);
+          alert(t('p.notFound'));
+          return;
+        }
+
+        const lat = Number(achado.lat);
+        const lng = Number(achado.lon);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+        onResultado({ lat, lng, nome: achado.display_name });
+        map.invalidateSize({ animate: false });
+        map.flyTo([lat, lng], 17, { animate: true, duration: 1 });
+      } catch (erro) {
+        if (erro.name !== 'AbortError') {
+          console.error('Erro ao pesquisar endereço:', erro);
+        }
+      }
+    })();
+
+    return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [busca, cidade, map]);
+
+  return null;
+}
+
 function Mapa({
   marcadorTemporario,
   ocorrenciasSalvas = [],
   visivel = true,
-  onMoverMarcador
+  onMoverMarcador,
+  filtros = {},
+  usuarioEmail,
+  idsSalvos = [],
+  onAlternarSalvo,
+  bairroAlvo,
+  cidadeAlvo,
+  buscaEndereco,
+  irParaBairro
 }) {
   // Identifica buscas reversas para evitar respostas antigas
   const buscaEnderecoId = useRef(0);
+
+  // Resultado da pesquisa de endereço feita na navbar
+  const [resultadoBusca, setResultadoBusca] = useState(null);
+  const { t } = useIdioma();
 
   // Filtra ocorrências com coordenadas válidas
   const ocorrenciasComCoordenadas = ocorrenciasSalvas.filter((item) => {
@@ -224,6 +368,15 @@ function Mapa({
       lng >= -180 &&
       lng <= 180
     );
+  });
+
+  const ocorrenciasFiltradas = ocorrenciasComCoordenadas.filter((item) => {
+    if (filtros.tipo && item.tipo !== filtros.tipo) return false;
+    if (filtros.cidade && normalizar(item.cidade) !== normalizar(filtros.cidade)) return false;
+    if (filtros.bairro && !correspondeBairro(item, filtros.bairro)) return false;
+    if (filtros.minhas && item.usuarioEmail !== usuarioEmail) return false;
+    if (filtros.salvas && !idsSalvos.includes(item.id)) return false;
+    return true;
   });
 
   // Verifica o marcador temporário
@@ -307,6 +460,8 @@ function Mapa({
         lng,
         endereco: dados.display_name || novoLocal,
         local: novoLocal,
+        bairro,
+        cidade,
         origem: 'arraste'
       });
 
@@ -323,6 +478,7 @@ function Mapa({
         center={POSICAO_PADRAO}
         zoom={14}
         scrollWheelZoom={true}
+        zoomControl={false}
         className="mapa"
       >
         <TileLayer
@@ -336,6 +492,39 @@ function Mapa({
         />
 
         <AtualizarTamanhoMapa visivel={visivel} />
+        <BuscarEndereco
+          busca={buscaEndereco}
+          cidade={cidadeAlvo}
+          onResultado={setResultadoBusca}
+        />
+        {/* Bairro escolhido no menu (filtro) */}
+        <CentralizarBairro
+          bairro={filtros.bairro}
+          cidade={filtros.cidade || cidadeAlvo}
+          ativar={visivel && Boolean(filtros.bairro)}
+        />
+        {/* Botão "Meu bairro": só leva o mapa até lá, sem filtrar */}
+        <CentralizarBairro
+          bairro={irParaBairro?.bairro}
+          cidade={irParaBairro?.cidade || cidadeAlvo}
+          ativar={visivel && Boolean(irParaBairro)}
+          foco={irParaBairro?.id}
+        />
+
+        {/* Endereço pesquisado na navbar */}
+        {resultadoBusca && (
+          <Marker
+            position={[resultadoBusca.lat, resultadoBusca.lng]}
+            icon={criarIcone('busca')}
+          >
+            <Popup className="popup-safeway">
+              <div className="popup-ocorrencia">
+                <strong>{t('p.searchedAddress')}</strong>
+                <p>{resultadoBusca.nome}</p>
+              </div>
+            </Popup>
+          </Marker>
+        )}
 
         {/* Marcador temporário que pode ser arrastado */}
         {posicaoTemporaria && (
@@ -347,18 +536,18 @@ function Mapa({
               dragend: finalizarArraste
             }}
           >
-            <Popup>
+            <Popup className="popup-safeway">
               <div className="popup-ocorrencia">
-                <strong>Local selecionado</strong>
+                <strong>{t('p.selectedPlace')}</strong>
 
                 <p>
                   {marcadorTemporario.local ||
                     marcadorTemporario.endereco ||
-                    'Arraste para ajustar a localização'}
+                    t('p.dragAdjust')}
                 </p>
 
                 <small>
-                  Arraste o marcador para mudar o endereço.
+                  {t('p.dragHint')}
                 </small>
               </div>
             </Popup>
@@ -366,9 +555,9 @@ function Mapa({
         )}
 
         {/* Marcadores das ocorrências registradas */}
-        {ocorrenciasComCoordenadas.map((item) => (
+        {ocorrenciasFiltradas.map((item) => (
           <Marker
-            key={item.id}
+            key={`${item.id}-${item.lat}-${item.lng}`}
             position={[
               Number(item.lat),
               Number(item.lng)
@@ -376,7 +565,7 @@ function Mapa({
             icon={criarIcone(item.tipo)}
           >
             <Popup className="popup-safeway">
-              <CartaoOcorrencia item={item} />
+              <CartaoOcorrencia item={item} salvo={idsSalvos.includes(item.id)} onAlternarSalvo={onAlternarSalvo} />
             </Popup>
           </Marker>
         ))}

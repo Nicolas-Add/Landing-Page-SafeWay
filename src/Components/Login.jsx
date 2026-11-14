@@ -125,7 +125,7 @@
   const CSS = `
   .swl{--bg:#000;--card:#000;--fg:#fff;--mut:#a3a3a3;--line:rgba(255,255,255,.75);--soft:rgba(255,255,255,.14);--p1:#5424bb;--p2:#c59dff;--err:#f87171;
   --glow:radial-gradient(ellipse 90% 220% at 100% 100%,#c59dff 0,#5424bb 17%,#000 45%);--edge:linear-gradient(90deg,#000,#5424bb 50%,#c59dff);
-  position:relative;min-height:100vh;display:grid;place-items:center;padding:1.5rem 1rem;background:var(--bg);color:var(--fg);
+  position:relative;min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:3.5rem 1rem 1.5rem;background:var(--bg);color:var(--fg);
   font-family:"Space Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif}
   .swl[data-theme="light"]{--bg:#f5f3fa;--card:#fff;--fg:#14101f;--mut:#605a70;--line:rgba(20,16,31,.6);--soft:rgba(20,16,31,.12);--err:#dc2626;
   --glow:radial-gradient(ellipse 90% 220% at 100% 100%,#c59dff 0,#b79cf2 17%,#fff 45%);--edge:linear-gradient(90deg,#fff,#b79cf2 50%,#c59dff)}
@@ -134,7 +134,7 @@
   .swl button{cursor:pointer}
   .swl :focus-visible{outline:2px solid var(--p2);outline-offset:2px}
   .swl .ico{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:transparent;display:grid;place-items:center;font-size:1rem;padding:0}
-  .swl .theme{position:absolute;top:1rem;right:1rem}
+  .swl .theme{position:absolute;top:1rem;right:1rem;z-index:2}
   .swl .box{position:relative;overflow:hidden;width:min(380px,100%);text-align:center;padding:1.6rem 1.5rem 1.5rem;border:1px solid transparent;border-radius:22px;
   background:linear-gradient(var(--card),var(--card)) padding-box,var(--edge) border-box}
   .swl .box::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at 100% 100%,#c59dff 0,#5424bb 14%,transparent 42%)}
@@ -166,5 +166,11 @@
 
   .swl .link{display:block;margin:1rem auto 0;background:none;border:0;text-decoration:underline;text-underline-offset:3px;font-size:.85rem}
   .swl .hint{color:var(--mut);font-size:.7rem;margin:.4rem 0 0}
+  @media(max-width:420px){
+    .swl .box{padding:1.3rem 1.1rem}
+    .swl h1{font-size:1.35rem}
+    .swl .dateWrap{flex-wrap:wrap;border-radius:18px;padding:.55rem .9rem}
+    .swl .gbtn{white-space:normal;text-align:left}
+  }
   @media(prefers-reduced-motion:reduce){.swl .tgl::after{transition:none}}
   `;

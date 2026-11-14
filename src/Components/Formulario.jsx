@@ -1,6 +1,6 @@
-
 import { useEffect, useRef, useState } from "react";
 import "./Formulario.css";
+import { useIdioma } from "./i18n.js";
 
 const CATS = {
   obras: ["Obras e infraestrutura", "#f0643c"],
@@ -14,6 +14,11 @@ const BAIRROS = {
   Canoas: ["Mathias Velho", "Niterói", "Igara", "Estância Velha", "Centro"],
   "Porto Alegre": ["Centro Histórico", "Cidade Baixa"],
 };
+
+const extrairLocal = (a = {}) => ({
+  bairro: a.suburb || a.neighbourhood || a.quarter || a.city_district || "",
+  cidade: a.city || a.town || a.municipality || a.village || "",
+});
 
 const norm = (t) =>
   String(t || "")
@@ -29,6 +34,7 @@ function Formulario({
   onSalvarOcorrencia,
   marcadorTemporario,
 }) {
+  const { t } = useIdioma();
   const [nome, setNome] = useState("");
   const [oculto, setOculto] = useState(false);
   const [local, setLocal] = useState("");
@@ -64,7 +70,7 @@ function Formulario({
         );
 
         const resposta = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=jsonv2&q=${query}&limit=1&countrycodes=br`,
+          `https://nominatim.openstreetmap.org/search?format=jsonv2&q=${query}&limit=1&countrycodes=br&addressdetails=1`,
           { signal: controller.signal }
         );
 
@@ -79,6 +85,7 @@ function Formulario({
             lat: Number(dados[0].lat),
             lng: Number(dados[0].lon),
             endereco: dados[0].display_name,
+            ...extrairLocal(dados[0].address),
             local: endereco,
             origem: "busca",
           };
@@ -138,12 +145,12 @@ function Formulario({
     event.preventDefault();
 
     if (!tipo) {
-      alert("Selecione o tipo do ocorrido.");
+      alert(t("f.errType"));
       return;
     }
 
     if (!desc.trim()) {
-      alert("Escreva uma descrição para a ocorrência.");
+      alert(t("f.errDesc"));
       return;
     }
 
@@ -154,24 +161,27 @@ function Formulario({
       norm(enderecoLocalizado) !== norm(local)
     ) {
       alert(
-        "Aguarde a localização ser encontrada ou atualizada no mapa antes de registrar."
+        t("f.errLoc")
       );
       return;
     }
 
     const loc = local.trim();
 
+    // Usa o bairro/cidade vindos da localização (busca ou arraste no mapa)
     const bairro =
+      marcadorTemporario.bairro ||
       Object.values(BAIRROS)
         .flat()
         .find((b) => norm(loc).includes(norm(b))) ||
-      loc ||
       "Centro";
 
     const cidade =
+      marcadorTemporario.cidade ||
       Object.keys(BAIRROS).find((c) =>
         BAIRROS[c].includes(bairro)
-      ) || "Canoas";
+      ) ||
+      "Canoas";
 
     const novaOcorrencia = {
       id: Date.now(),
@@ -222,16 +232,16 @@ function Formulario({
           className="back-btn"
           onClick={onClose}
         >
-          Voltar ◂
+          {t("f.back")}
         </button>
 
         <form
           className="form-ocorrencia"
           onSubmit={enviarFormulario}
         >
-          <h2>Registrar Ocorrência</h2>
+          <h2>{t("f.title")}</h2>
 
-          <label htmlFor="nome">Nome:</label>
+          <label htmlFor="nome">{t("f.name")}</label>
 
           <input
             id="nome"
@@ -239,21 +249,21 @@ function Formulario({
             type="text"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-            placeholder="Seu nome..."
+            placeholder={t("f.yourName")}
           />
 
           <div className="hide">
-            <span>Ocultar nome:</span>
+            <span>{t("f.hideName")}</span>
 
             <button
               type="button"
               className={"tgl" + (oculto ? " on" : "")}
               onClick={() => setOculto(!oculto)}
-              aria-label="Ocultar nome"
+              aria-label={t("f.hideNameAria")}
             />
           </div>
 
-          <label htmlFor="local">Local:</label>
+          <label htmlFor="local">{t("f.place")}</label>
 
           <input
             id="local"
@@ -261,28 +271,26 @@ function Formulario({
             type="text"
             value={local}
             onChange={(e) => alterarLocal(e.target.value)}
-            placeholder="Digite o endereço ou local..."
+            placeholder={t("f.placePh")}
             required
           />
 
           <small className="ajuda-local">
-            Digite o endereço e aguarde a localização aparecer.
-            Você também pode arrastar o marcador no mapa para
-            atualizar automaticamente a rua e o bairro.
+            {t("f.placeHelp")}
           </small>
 
           {local.trim().length >= 5 && (
             <div className="local-encontrado">
               {norm(enderecoLocalizado) === norm(local) &&
               marcadorTemporario ? (
-                <span>✓ Localização atualizada</span>
+                <span>{t("f.located")}</span>
               ) : (
-                <span>Procurando localização...</span>
+                <span>{t("f.locating")}</span>
               )}
             </div>
           )}
 
-          <label htmlFor="data">Data:</label>
+          <label htmlFor="data">{t("f.date")}</label>
 
           <input
             id="data"
@@ -293,7 +301,7 @@ function Formulario({
           />
 
           <div className="lbl">
-            Selecione o tipo do ocorrido:
+            {t("f.pickType")}
           </div>
 
           <div className="types">
@@ -305,24 +313,24 @@ function Formulario({
                 style={{ color: c, borderColor: c }}
                 onClick={() => setTipo(k)}
               >
-                {n}
+                {t("cat." + k)}
               </button>
             ))}
           </div>
 
-          <label htmlFor="descricao">Descrição:</label>
+          <label htmlFor="descricao">{t("f.desc")}</label>
 
           <textarea
             id="descricao"
             className="f"
             value={desc}
             onChange={(e) => setDesc(e.target.value)}
-            placeholder="Descreva o ocorrido..."
+            placeholder={t("f.descPh")}
             required
           />
 
           <label htmlFor="imagem">
-            Adicionar Imagem (Opcional):
+            {t("f.image")}
           </label>
 
           <input
@@ -332,7 +340,7 @@ function Formulario({
             accept="image/*"
           />
 
-          <label htmlFor="fonte">Fonte (Opcional):</label>
+          <label htmlFor="fonte">{t("f.source")}</label>
 
           <input
             id="fonte"
@@ -340,11 +348,11 @@ function Formulario({
             type="text"
             value={fonte}
             onChange={(e) => setFonte(e.target.value)}
-            placeholder="Link ou origem..."
+            placeholder={t("f.sourcePh")}
           />
 
           <div className="note">
-            Se não houver fonte, a mensagem receberá o selo de não verificada!
+            {t("f.note")}
           </div>
 
           <div className="form-actions">
@@ -353,14 +361,14 @@ function Formulario({
               className="btn-secondary"
               onClick={limparCampos}
             >
-              Excluir
+              {t("f.delete")}
             </button>
 
             <button
               type="submit"
               className="btn-primary"
             >
-              Registrar
+              {t("f.submit")}
             </button>
           </div>
         </form>

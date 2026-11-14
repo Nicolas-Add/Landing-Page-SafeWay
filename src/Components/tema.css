@@ -1,0 +1,245 @@
+/* ============================================================
+   TEMA.CSS - Modo claro
+   Importado por último no App.jsx, depois dos CSS dos componentes.
+   O modo escuro continua usando os estilos originais.
+   ============================================================ */
+
+.aplicativo.tema-claro {
+  --bg: #f5f3fa;
+  --text: #605a70;
+  --text-h: #14101f;
+  --border: #d9d3e6;
+  --code-bg: #ece8f5;
+  --accent: #6d2fc9;
+  --accent-bg: rgba(109, 47, 201, 0.12);
+  --accent-border: rgba(109, 47, 201, 0.45);
+  --shadow: 0 6px 18px rgba(20, 16, 31, 0.1);
+
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+/* ---------- Navbar ---------- */
+
+.tema-claro .navbar-logo,
+.tema-claro .botao-menu {
+  color: #14101f;
+}
+
+.tema-claro .botao-menu:hover {
+  color: #6d2fc9;
+}
+
+/* ---------- Menu lateral ---------- */
+
+.tema-claro .menu-lateral {
+  background: #ffffff;
+  color: #14101f;
+  border-left-color: #c9b3ee;
+  box-shadow: -10px 0 35px rgba(20, 16, 31, 0.2);
+}
+
+.tema-claro .menu-cabecalho {
+  background: linear-gradient(110deg, #f3ecff, #e2d2fb);
+  border-bottom-color: #d3bdf5;
+}
+
+.tema-claro .menu-cabecalho strong {
+  color: #14101f;
+}
+
+.tema-claro .menu-cabecalho p {
+  color: #605a70;
+}
+
+.tema-claro .menu-fechar {
+  background: #ffffff;
+  color: #14101f;
+}
+
+.tema-claro .menu-fechar:hover {
+  background: #8539d9;
+  color: #ffffff;
+}
+
+.tema-claro .menu-conteudo {
+  scrollbar-color: #b79cf2 #ffffff;
+}
+
+.tema-claro .menu-conteudo::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+.tema-claro .menu-secao h3 {
+  color: #6d2fc9;
+}
+
+.tema-claro .menu-divisor {
+  background: rgba(133, 57, 217, 0.2);
+}
+
+.tema-claro .menu-link {
+  color: #14101f;
+}
+
+.tema-claro .menu-link:hover {
+  background: rgba(133, 57, 217, 0.1);
+  border-color: #c9b3ee;
+}
+
+.tema-claro .menu-link.selecionado {
+  background: rgba(133, 57, 217, 0.15);
+  border-color: #8539d9;
+  color: #5a1fa8;
+}
+
+.tema-claro .menu-sair {
+  color: #c0392b;
+}
+
+.tema-claro .menu-sair:hover {
+  background: rgba(220, 50, 50, 0.1);
+  border-color: rgba(220, 50, 50, 0.4);
+}
+
+.tema-claro .menu-chip {
+  background: #f3f0f9;
+  border-color: #d9d3e6;
+  color: #14101f;
+}
+
+.tema-claro .menu-chip:hover {
+  background: #e9ddfa;
+  border-color: #a45be9;
+}
+
+.tema-claro .menu-chip.selecionado {
+  background: linear-gradient(110deg, #32134d, #7025bd);
+  border-color: #a45be9;
+  color: #ffffff;
+}
+
+.tema-claro .menu-select {
+  background: #f3f0f9;
+  border-color: #d9d3e6;
+  color: #14101f;
+}
+
+.tema-claro .menu-limpar {
+  color: #6d2fc9;
+}
+
+.tema-claro .menu-limpar:hover {
+  background: #7025bd;
+  color: #ffffff;
+}
+
+/* ---------- Perfil ---------- */
+
+.tema-claro .pagina-perfil {
+  color: #14101f;
+}
+
+.tema-claro .perfil-editar {
+  color: #14101f;
+}
+
+.tema-claro .perfil-editar:hover {
+  color: #8539d9;
+}
+
+.tema-claro .perfil-campo span {
+  border-color: rgba(20, 16, 31, 0.6);
+}
+
+.tema-claro .perfil-form-edicao input {
+  background: #ffffff;
+  color: #14101f;
+}
+
+.tema-claro .perfil-toggle {
+  background: #d9d3e6;
+  border-color: rgba(20, 16, 31, 0.6);
+}
+
+.tema-claro .perfil-toggle span {
+  background: #14101f;
+}
+
+.tema-claro .perfil-toggle.ligado {
+  background: #7026b9;
+  border-color: #c18aff;
+}
+
+.tema-claro .perfil-toggle.ligado span {
+  background: #ffffff;
+}
+
+.tema-claro .perfil-sem-ocorrencias {
+  color: #605a70;
+  background: linear-gradient(100deg, #ffffff 65%, #e6d5fb);
+}
+
+/* ---------- Formulário (painel lateral) ---------- */
+
+.tema-claro .drawer-container {
+  background: #ffffff;
+  color: #14101f;
+  box-shadow: -5px 0 25px rgba(20, 16, 31, 0.2);
+}
+
+.tema-claro .back-btn {
+  color: #605a70;
+}
+
+.tema-claro .back-btn:hover {
+  color: #14101f;
+}
+
+.tema-claro .form-ocorrencia h2 {
+  color: #14101f;
+}
+
+.tema-claro .form-ocorrencia label,
+.tema-claro .form-ocorrencia .lbl,
+.tema-claro .hide,
+.tema-claro .note {
+  color: #605a70;
+}
+
+.tema-claro .form-ocorrencia .f {
+  background: #f5f3fa;
+  border-color: #d9d3e6;
+  color: #14101f;
+}
+
+.tema-claro .form-ocorrencia input[type="file"].f {
+  color: #605a70;
+}
+
+.tema-claro button.tgl {
+  background: #d9d3e6;
+  border-color: #b5aecb;
+}
+
+.tema-claro button.tgl.on {
+  background: #8539d9;
+}
+
+.tema-claro .btn-primary {
+  background: #14101f;
+  color: #ffffff;
+}
+
+.tema-claro .btn-primary:hover {
+  background: #2c2540;
+}
+
+.tema-claro .btn-secondary {
+  color: #14101f;
+  border-color: #b5aecb;
+}
+
+.tema-claro .btn-secondary:hover {
+  background: rgba(20, 16, 31, 0.05);
+}

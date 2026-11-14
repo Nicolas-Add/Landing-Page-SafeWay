@@ -1,5 +1,6 @@
-
-/* Navbar principal */
+/* =====================================
+   NAVBAR PRINCIPAL
+===================================== */
 
 .navbar-principal,
 .navbar-mural {
@@ -7,37 +8,80 @@
   top: 0;
   left: 0;
   z-index: 1000;
+
   width: 100%;
   height: 76px;
   padding: 0 25px;
 
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 18px;
 
   background: transparent;
   box-sizing: border-box;
 }
 
-/* Botão menu */
+/* LOGO */
+
+.navbar-logo {
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  white-space: nowrap;
+  margin-right: 15px;
+}
+
+/* LINKS DA NAVBAR */
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* BOTÃO MENU */
 
 .botao-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
   background: transparent;
   color: white;
   border: none;
+
   font-size: 30px;
   cursor: pointer;
-  margin-right: 5px;
+  flex-shrink: 0;
 }
 
-/* Pesquisa */
+.botao-menu:hover {
+  color: #bd83ff;
+}
+
+/* AÇÕES DA NAVBAR */
+
+.navbar-acoes {
+  margin-left: auto;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* PESQUISA */
 
 .pesquisa {
   width: 310px;
   height: 40px;
   padding: 0 20px;
+
   border: 1px solid #8539d9;
   border-radius: 30px;
+
   background: linear-gradient(110deg, #000000 65%, #7824cf);
   color: white;
   outline: none;
@@ -47,18 +91,52 @@
   color: white;
 }
 
-/* Botões de navegação */
+/* BOTÃO LUPA (APARECE EM DISPOSITIVOS PEQUENOS) */
+
+.botao-lupa {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #8539d9;
+  border-radius: 50%;
+  background: linear-gradient(110deg, #000000 65%, #7824cf);
+  color: white;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: 0.3s;
+}
+
+.botao-lupa:hover {
+  background: #7025bd;
+}
+
+.botao-lupa svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+}
+
+/* BOTÕES DE NAVEGAÇÃO */
 
 .nav-item {
   height: 40px;
   min-width: 125px;
   padding: 0 20px;
+
   border: 1px solid #8539d9;
   border-radius: 30px;
+
   background: linear-gradient(110deg, #000000 65%, #7824cf);
   color: white;
+
   cursor: pointer;
   transition: 0.3s;
+  white-space: nowrap;
 }
 
 .nav-item:hover,
@@ -66,15 +144,18 @@
   background: linear-gradient(110deg, #25103d, #8735df);
 }
 
-/* Botão adicionar */
+/* BOTÃO ADICIONAR */
 
 .botao-adicionar {
   width: 40px;
   height: 40px;
+
   border: 1px solid #8539d9;
   border-radius: 50%;
+
   background: #050505;
   color: white;
+
   font-size: 25px;
   cursor: pointer;
   transition: 0.3s;
@@ -84,60 +165,69 @@
   background: #7025bd;
 }
 
-/* Espaçamento automático */
+/* ESPAÇAMENTO AUTOMÁTICO */
 
 .navbar-espacador {
   flex: 1;
 }
 
-/* Registrar ocorrência */
+/* REGISTRAR OCORRÊNCIA */
 
 .botao-registrar {
   height: 40px;
   padding: 0 20px;
+
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 8px;
+
   border: 1px solid #8539d9;
   border-radius: 30px;
+
   background: linear-gradient(110deg, #000000 65%, #7824cf);
   color: white;
+
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.botao-registrar span {
-  font-size: 19px;
+.botao-registrar svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  flex-shrink: 0;
 }
 
 .botao-registrar:hover {
   background: #7025bd;
 }
 
-/* Perfil */
+/* PERFIL */
 
 .botao-perfil {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
+
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+
   border: 1px solid #8539d9;
   border-radius: 50%;
+
   background: #050505;
   color: white;
+
   cursor: pointer;
   transition: 0.3s;
-}
-
-.botao-perfil span:first-child {
-  font-size: 15px;
-}
-
-.botao-perfil span:last-child {
-  font-size: 14px;
+  flex-shrink: 0;
 }
 
 .botao-perfil:hover,
@@ -146,48 +236,554 @@
   border-color: #c59dff;
 }
 
-/* Responsividade */
+
+/* =====================================
+   FUNDO ESCURO DO MENU
+===================================== */
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: transparent;
+}
+
+
+/* =====================================
+   MENU LATERAL
+===================================== */
+
+.menu-lateral {
+
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  z-index: 1200;
+
+  width: min(390px, 90vw);
+  height: 100vh;
+  height: 100dvh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #15141b;
+  color: #f5f5f5;
+
+  border-left: 1px solid #7025bd;
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.45);
+
+  transform: translateX(105%);
+  visibility: hidden;
+
+  transition:
+    transform 0.3s ease,
+    visibility 0.3s ease;
+
+  overflow: hidden;
+}
+
+.menu-lateral.aberto {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+
+/* =====================================
+   CABEÇALHO DO MENU
+===================================== */
+
+.menu-cabecalho {
+  min-height: 85px;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: linear-gradient(110deg, #17131f, #32134d);
+  border-bottom: 1px solid #542080;
+
+  box-sizing: border-box;
+}
+
+.menu-cabecalho strong {
+  display: block;
+
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.menu-cabecalho p {
+  margin: 5px 0 0;
+
+  color: #b9a9ca;
+  font-size: 13px;
+}
+
+.menu-fechar {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #8539d9;
+  border-radius: 50%;
+
+  background: #1c1526;
+  color: white;
+
+  font-size: 25px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.menu-fechar:hover {
+  background: #8539d9;
+}
+
+
+/* =====================================
+   CONTEÚDO DO MENU
+===================================== */
+
+.menu-conteudo {
+  flex: 1;
+
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+  scrollbar-color: #7025bd #15141b;
+}
+
+.menu-conteudo::-webkit-scrollbar {
+  width: 6px;
+}
+
+.menu-conteudo::-webkit-scrollbar-track {
+  background: #15141b;
+}
+
+.menu-conteudo::-webkit-scrollbar-thumb {
+  background: #7025bd;
+  border-radius: 10px;
+}
+
+
+/* =====================================
+   SEÇÕES
+===================================== */
+
+.menu-secao {
+  margin-bottom: 20px;
+}
+
+.menu-secao h3 {
+  margin: 0 0 13px;
+
+  color: #c89aff;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.menu-divisor {
+  width: 100%;
+  height: 1px;
+
+  margin: 18px 0;
+
+  background: rgba(166, 100, 230, 0.2);
+}
+
+
+/* =====================================
+   LINKS DO MENU
+===================================== */
+
+.menu-link {
+  width: 100%;
+  min-height: 43px;
+  padding: 10px 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  background: transparent;
+  color: #eeeeee;
+
+  font-size: 14px;
+  text-align: left;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.menu-link:hover {
+  background: rgba(133, 57, 217, 0.15);
+  border-color: #542080;
+}
+
+.menu-link.selecionado {
+  background: rgba(133, 57, 217, 0.25);
+  border-color: #8539d9;
+  color: #d7b6ff;
+}
+
+.menu-sair {
+  color: #ff8b8b;
+}
+
+.menu-sair:hover {
+  background: rgba(220, 50, 50, 0.12);
+  border-color: rgba(220, 50, 50, 0.4);
+}
+
+
+/* =====================================
+   OPÇÕES E FILTROS
+===================================== */
+
+.menu-opcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.menu-chip {
+  min-height: 35px;
+  padding: 7px 12px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  border: 1px solid #494052;
+  border-radius: 20px;
+
+  background: #211e28;
+  color: #eeeeee;
+
+  font-size: 12px;
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.menu-chip:hover {
+  border-color: #a45be9;
+  background: #30213e;
+}
+
+.menu-chip.selecionado {
+  border-color: #a45be9;
+  background: linear-gradient(110deg, #32134d, #7025bd);
+  color: white;
+  box-shadow: 0 0 10px rgba(133, 57, 217, 0.2);
+}
+
+.menu-chip-ponto {
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+  background: var(--chip-cor, #8539d9);
+  flex-shrink: 0;
+}
+
+
+/* =====================================
+   LIMPAR FILTROS
+===================================== */
+
+.menu-limpar {
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border: 1px solid #8539d9;
+  border-radius: 9px;
+
+  background: transparent;
+  color: #c99aff;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.menu-limpar:hover {
+  background: #7025bd;
+  color: white;
+}
+
+.menu-limpar span {
+  min-width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: #8539d9;
+  color: white;
+}
+
+
+/* =====================================
+   SELETOR DE IDIOMA
+===================================== */
+
+.menu-select {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+
+  border: 1px solid #494052;
+  border-radius: 8px;
+
+  background: #211e28;
+  color: white;
+
+  outline: none;
+  cursor: pointer;
+}
+
+.menu-select:focus {
+  border-color: #a45be9;
+}
+
+
+/* =====================================
+   PESQUISA (campo na navbar)
+===================================== */
+
+.pesquisa-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pesquisa {
+  padding-right: 38px;
+}
+
+.pesquisa-limpar {
+  position: absolute;
+  right: 12px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+/* =====================================
+   RESPONSIVIDADE
+===================================== */
+
+@media (max-width: 1024px) {
+  .navbar-principal,
+  .navbar-mural {
+    gap: 10px;
+    padding: 0 16px;
+  }
+
+  .navbar-logo {
+    margin-right: 6px;
+  }
+
+  .pesquisa {
+    width: 210px;
+  }
+
+  .nav-item {
+    min-width: auto;
+    padding: 0 14px;
+  }
+}
 
 @media (max-width: 850px) {
   .navbar-principal,
   .navbar-mural {
     gap: 8px;
-    padding: 0 10px;
+    padding: 0 12px;
+  }
+
+  .navbar-logo {
+    font-size: 19px;
+    margin-right: 4px;
   }
 
   .pesquisa {
-    width: 150px;
+    width: 165px;
+    padding: 0 32px 0 14px;
+    font-size: 13px;
   }
 
   .nav-item {
     min-width: auto;
     padding: 0 12px;
+    font-size: 13px;
   }
 
   .botao-registrar {
-    padding: 0 12px;
-    font-size: 11px;
+    padding: 0 13px;
+    font-size: 12px;
   }
 }
 
-@media (max-width: 600px) {
-  .pesquisa {
-    display: none;
-  }
-
+@media (max-width: 720px) {
   .navbar-principal,
   .navbar-mural {
-    flex-wrap: wrap;
-    height: auto;
-    min-height: 70px;
-    padding: 12px;
+    height: 68px;
+    flex-wrap: nowrap;
+    padding: 0 10px;
+    gap: 6px;
   }
 
-  .navbar-espacador {
+  /* Oculta o nome SafeWay para todos os ícones e botões ficarem na mesma linha */
+  .navbar-logo {
     display: none;
+  }
+
+  .botao-menu {
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .navbar-links {
+    gap: 6px;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .nav-item {
+    height: 36px;
+    min-width: auto;
+    padding: 0 11px;
+    font-size: 12px;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .navbar-acoes {
+    margin-left: auto;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  /* Simplifica o pesquisar usando apenas o ícone de lupinha por padrão */
+  .pesquisa-wrap .pesquisa,
+  .pesquisa-wrap .pesquisa-limpar {
+    display: none;
+  }
+
+  .botao-lupa {
+    display: flex;
+  }
+
+  /* Quando a pesquisa estiver aberta no mobile */
+  .navbar-principal.busca-ativa .navbar-links,
+  .navbar-principal.busca-ativa .botao-registrar,
+  .navbar-principal.busca-ativa .botao-perfil {
+    display: none;
+  }
+
+  .navbar-principal.busca-ativa .navbar-acoes {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .navbar-principal.busca-ativa .pesquisa-wrap {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .navbar-principal.busca-ativa .pesquisa-wrap .pesquisa {
+    display: block;
+    width: 100%;
+    height: 36px;
+    font-size: 13px;
+    padding: 0 32px 0 14px;
+  }
+
+  .navbar-principal.busca-ativa .pesquisa-wrap .pesquisa-limpar {
+    display: block;
   }
 
   .botao-registrar {
-    margin-left: auto;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    gap: 0;
+    border-radius: 50%;
+  }
+
+  .botao-registrar .texto-registrar {
+    display: none;
+  }
+
+  .botao-registrar svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .botao-perfil {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .menu-lateral {
+    width: min(360px, 92vw);
+    border-top-left-radius: 22px;
+    border-bottom-left-radius: 22px;
+  }
+}
+
+@media (max-width: 370px) {
+  .navbar-principal,
+  .navbar-mural {
+    padding: 0 6px;
+    gap: 4px;
+  }
+
+  .nav-item {
+    padding: 0 8px;
+    font-size: 11px;
+  }
+
+  .botao-menu,
+  .botao-lupa,
+  .botao-registrar,
+  .botao-perfil {
+    width: 33px;
+    height: 33px;
   }
 }
