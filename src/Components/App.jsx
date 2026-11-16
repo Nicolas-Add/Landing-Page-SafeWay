@@ -6,13 +6,20 @@ import NavBar from './NavBar.jsx';
 import Mapa from './Mapa.jsx';
 import Mural from './Mural.jsx';
 import Perfil from './Perfil.jsx';
+import Moderacao from './Moderacao.jsx';
 import { IdiomaContext, criarT } from './i18n.js';
 import './tema.css';
 
 function lerUsuarioSalvo() {
   try {
-    const usuario = localStorage.getItem('sw-user');
-    return usuario ? JSON.parse(usuario) : null;
+    const salvo = localStorage.getItem('sw-user');
+    if (!salvo) return null;
+    const usuario = JSON.parse(salvo);
+    const email = String(usuario?.email || '').toLowerCase();
+    if (email === 'admin@gmail.com') return { ...usuario, role: 'admin' };
+    const usuarios = JSON.parse(localStorage.getItem('sw-users') || '[]');
+    const cadastro = Array.isArray(usuarios) ? usuarios.find((u) => String(u.email).toLowerCase() === email) : null;
+    return { ...usuario, role: cadastro?.role || usuario.role || 'user' };
   } catch {
     return null;
   }
@@ -20,6 +27,23 @@ function lerUsuarioSalvo() {
 
 function App() {
   const [usuario, setUsuario] = useState(lerUsuarioSalvo);
+  const [usuariosCadastrados, setUsuariosCadastrados] = useState(() => {
+    try { const lista = JSON.parse(localStorage.getItem('sw-users') || '[]'); return Array.isArray(lista) ? lista : []; } catch { return []; }
+  });
+  useEffect(() => {
+    const email = String(usuario?.email || '').trim().toLowerCase();
+    if (!email) return;
+    const role = email === 'admin@gmail.com' ? 'admin' : (usuario?.role || 'user');
+    setUsuariosCadastrados((anteriores) => {
+      const existe = anteriores.some((u) => String(u.email).toLowerCase() === email);
+      const atualizados = existe
+        ? anteriores.map((u) => String(u.email).toLowerCase() === email ? { ...u, nome: usuario?.nome || u.nome, role } : u)
+        : [...anteriores, { nome: usuario?.nome || 'Usuário', email, role }];
+      try { localStorage.setItem('sw-users', JSON.stringify(atualizados)); } catch {}
+      return atualizados;
+    });
+  }, [usuario]);
+
   const [abaAtiva, setAbaAtiva] = useState('mapa');
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [marcadorTemporario, setMarcadorTemporario] = useState(null);
@@ -73,8 +97,35 @@ function App() {
   }
 
   function realizarLogin(usuarioLogado) {
-    setUsuario(usuarioLogado);
+    const email = String(usuarioLogado?.email || '').trim().toLowerCase();
+    const papel = email === 'admin@gmail.com' ? 'admin' : (usuariosCadastrados.find((u) => String(u.email).toLowerCase() === email)?.role || 'user');
+    const usuarioComPapel = { ...usuarioLogado, role: papel };
+    if (email) {
+      setUsuariosCadastrados((anteriores) => {
+        const semDuplicado = anteriores.filter((u) => String(u.email).toLowerCase() !== email);
+        const atualizados = [...semDuplicado, { nome: usuarioLogado.nome, email, role: papel }];
+        try { localStorage.setItem('sw-users', JSON.stringify(atualizados)); } catch {}
+        return atualizados;
+      });
+    }
+    setUsuario(usuarioComPapel);
+    try { localStorage.setItem('sw-user', JSON.stringify(usuarioComPapel)); } catch {}
     setAbaAtiva('mapa');
+  }
+
+  function alterarPapelUsuario(email, role) {
+    const alvo = String(email || '').toLowerCase();
+    setUsuariosCadastrados((anteriores) => {
+      const atualizados = anteriores.map((u) => String(u.email).toLowerCase() === alvo ? { ...u, role } : u);
+      try { localStorage.setItem('sw-users', JSON.stringify(atualizados)); } catch {}
+      return atualizados;
+    });
+  }
+
+  function moderarOcorrencia(id, statusModeracao) {
+    setOcorrenciasSalvas((anteriores) => anteriores.map((item) => item.id === id
+      ? { ...item, statusModeracao, moderadoPor: usuario?.email || '', moderadoEm: Date.now() }
+      : item));
   }
 
   function sairDaConta() {
@@ -167,6 +218,7 @@ function App() {
       lng: Number(lng),
       usuarioEmail: usuario?.email || null,
       usuarioNome: usuario?.nome || 'Visitante',
+      statusModeracao: novaOcorrencia.statusModeracao || 'Em análise',
     };
 
     setOcorrenciasSalvas((prev) => [...prev, ocorrenciaComCoordenadas]);
@@ -242,6 +294,7 @@ function App() {
         onAlterarBusca={alterarBusca}
         onBuscar={pesquisarEndereco}
         onAlterarIdioma={alterarIdioma}
+        onAbrirModeracao={() => { setAbaAtiva('moderacao'); setMostrarFormulario(false); }}
       />
 
       <main className="conteudo-principal">
@@ -280,6 +333,13 @@ function App() {
             onAtualizarUsuario={atualizarUsuario}
             onComentar={comentarOcorrencia}
           />
+        </section>
+
+        <section className={`pagina-moderacao ${abaAtiva !== 'moderacao' ? 'pagina-oculta' : ''}`}>
+          {(usuario?.role === 'admin' || usuario?.role === 'moderator') && (
+            <Moderacao usuario={usuario} usuarios={usuariosCadastrados} ocorrencias={ocorrenciasSalvas}
+              onAlterarPapel={alterarPapelUsuario} onModerarOcorrencia={moderarOcorrencia} />
+          )}
         </section>
       </main>
 

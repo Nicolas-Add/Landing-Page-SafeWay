@@ -495,3 +495,9 @@
   background: #7f2525;
   color: #fff;
 }
+
+
+.status-moderacao-card{display:flex;justify-content:flex-start;margin:7px 0 2px}
+.status-moderacao-card span{display:inline-flex;align-items:center;border-radius:999px;padding:4px 9px;font-size:.68rem;font-weight:700;background:rgba(180,130,30,.16);color:#d6ad54}
+.status-moderacao-card .verificada{background:rgba(16,185,129,.14);color:#34d399}
+.status-moderacao-card .falsa{background:rgba(239,68,68,.14);color:#f87171}

@@ -42,6 +42,7 @@ function Formulario({
   const [tipo, setTipo] = useState("");
   const [desc, setDesc] = useState("");
   const [fonte, setFonte] = useState("");
+  const [imagem, setImagem] = useState("");
   const [enderecoLocalizado, setEnderecoLocalizado] = useState("");
 
   // Evita uma nova busca quando o endereço veio do arraste do mapa
@@ -197,6 +198,8 @@ function Formulario({
       ts: data ? new Date(data).getTime() : Date.now(),
       desc: desc.trim(),
       fonte: fonte.trim(),
+      imagem,
+      statusModeracao: "Em análise",
       mine: true,
       comments: [],
     };
@@ -215,6 +218,9 @@ function Formulario({
     setTipo("");
     setDesc("");
     setFonte("");
+    setImagem("");
+    const campoImagem = document.getElementById("imagem");
+    if (campoImagem) campoImagem.value = "";
     setEnderecoLocalizado("");
     ignorarProximaBusca.current = false;
     setMarcadorTemporario?.(null);
@@ -337,8 +343,37 @@ function Formulario({
             id="imagem"
             className="f"
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            onChange={(evento) => {
+              const arquivo = evento.target.files?.[0];
+              if (!arquivo) { setImagem(""); return; }
+              if (!arquivo.type.startsWith("image/")) {
+                alert("Selecione um arquivo de imagem válido.");
+                evento.target.value = "";
+                return;
+              }
+              if (arquivo.size > 1024 * 1024) {
+                alert("A imagem deve ter no máximo 1 MB.");
+                evento.target.value = "";
+                setImagem("");
+                return;
+              }
+              const leitor = new FileReader();
+              leitor.onload = () => setImagem(String(leitor.result || ""));
+              leitor.onerror = () => alert("Não foi possível carregar a imagem.");
+              leitor.readAsDataURL(arquivo);
+            }}
           />
+          {imagem && (
+            <div className="form-imagem-preview">
+              <img src={imagem} alt="Pré-visualização da ocorrência" />
+              <button type="button" onClick={() => {
+                setImagem("");
+                const campo = document.getElementById("imagem");
+                if (campo) campo.value = "";
+              }}>Remover imagem</button>
+            </div>
+          )}
 
           <label htmlFor="fonte">{t("f.source")}</label>
 

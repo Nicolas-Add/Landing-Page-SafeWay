@@ -186,6 +186,12 @@ function CartaoOcorrencia({ item, salvo, onAlternarSalvo }) {
         </div>
       </div>
 
+      {item.imagem && (
+        <div className="popup-imagem-wrap">
+          <img className="popup-imagem" src={item.imagem} alt="Imagem anexada à ocorrência" />
+        </div>
+      )}
+
       <div className="popup-conteudo">
         <div className="popup-campo">
           <strong>{t('p.location')}</strong>
@@ -217,12 +223,11 @@ function CartaoOcorrencia({ item, salvo, onAlternarSalvo }) {
         {salvo ? t('p.unsave') : t('p.save')}
       </button>
 
-      <div
-        className={`popup-status ${
-          item.fonte ? 'fonte-informada' : 'nao-verificado'
-        }`}
-      >
-        {item.fonte ? t('p.sourceGiven') : t('c.unverified')}
+      <div className={`popup-status ${
+        item.statusModeracao === 'Verificada' ? 'status-verificada' :
+        item.statusModeracao === 'Falsa' ? 'status-falsa' : 'nao-verificado'
+      }`}>
+        {item.statusModeracao || 'Em análise'}
       </div>
     </div>
   );

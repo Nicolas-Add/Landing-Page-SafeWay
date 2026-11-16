@@ -40,6 +40,7 @@ export default function NavBar({
   onAlterarBusca,
   onBuscar,
   onAlterarIdioma,
+  onAbrirModeracao,
 }) {
   const { t, idioma } = useIdioma();
   const [menuAberto, setMenuAberto] = useState(false);
@@ -169,7 +170,11 @@ export default function NavBar({
             {t('nav.myNeighborhood')}
           </button>
 
-          {(abaAtiva === 'mural' || abaAtiva === 'perfil') && (
+          {(
+            abaAtiva === 'mural' ||
+            abaAtiva === 'perfil' ||
+            abaAtiva === 'moderacao'
+          ) && (
             <button
               className="nav-item"
               onClick={() => setAbaAtiva('mapa')}
@@ -299,6 +304,23 @@ export default function NavBar({
 
         {/* FILTROS */}
         <div className="menu-conteudo">
+
+          {(usuario?.role === 'admin' || usuario?.role === 'moderator') && (
+            <>
+              <section className="menu-secao">
+                <button className="menu-link" onClick={() => {
+                  setMenuAberto(false);
+                  onAbrirModeracao?.();
+                }}>
+                  <span>{usuario.role === 'admin'
+                    ? t('nav.adminPanel')
+                    : t('nav.moderation')}</span>
+                  <span>✓</span>
+                </button>
+              </section>
+              <div className="menu-divisor" />
+            </>
+          )}
 
           {/* OCORRÊNCIAS */}
           <section className="menu-secao">
