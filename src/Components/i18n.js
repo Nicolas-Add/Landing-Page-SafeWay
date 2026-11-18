@@ -1,3 +1,4 @@
+
 import { createContext, useContext } from 'react';
 
 // Opções exibidas no seletor de idioma do menu
@@ -7,7 +8,11 @@ export const IDIOMAS = [
   ['es', 'Español'],
 ];
 
-export const LOCALES = { pt: 'pt-BR', en: 'en-US', es: 'es-ES' };
+export const LOCALES = {
+  pt: 'pt-BR',
+  en: 'en-US',
+  es: 'es-ES'
+};
 
 const T = {
   pt: {
@@ -34,6 +39,34 @@ const T = {
     'nav.light': 'Modo claro',
     'nav.myProfile': 'Meu perfil',
     'nav.logout': 'Sair da conta',
+
+    // Moderação e administração
+    'nav.moderation': 'Moderação',
+    'nav.adminPanel': 'Painel administrativo',
+    'nav.moderator': 'Moderador',
+    'nav.admin': 'Administrador',
+    'nav.adminHelp': 'Gerencie quem pode validar as ocorrências publicadas.',
+    'nav.moderationHelp': 'Analise as ocorrências da comunidade e indique se são verdadeiras.',
+    'nav.manageModerators': 'Gerenciar moderadores',
+    'nav.promoteRemoveModerators': 'Promova contas cadastradas ou remova a permissão de moderação.',
+    'nav.noUsers': 'Ainda não há contas cadastradas para gerenciar.',
+    'nav.reviewOccurrences': 'Ocorrências para análise',
+    'nav.pending': 'pendente(s)',
+    'nav.noOccurrences': 'Nenhuma ocorrência foi publicada ainda.',
+    'nav.user': 'Usuário',
+    'nav.occurrence': 'Ocorrência',
+    'nav.noDescription': 'Sem descrição.',
+    'nav.locationNotInformed': 'Local não informado',
+    'nav.publishedBy': 'Publicado por:',
+    'nav.removeModerator': 'Remover moderador',
+    'nav.makeModerator': 'Tornar moderador',
+    'nav.markVerified': 'Marcar como verídica',
+    'nav.markFalse': 'Marcar como falsa',
+    'nav.verified': 'Verificada',
+    'nav.false': 'Falsa',
+    'nav.underReview': 'Em análise',
+    'nav.attachedImage': 'Imagem anexada à ocorrência',
+    'nav.moderationWarning': 'A moderação deste protótipo utiliza armazenamento local do navegador. As permissões e decisões não são protegidas por um servidor e podem ser alteradas por quem tiver acesso ao dispositivo.',
 
     'cat.obras': 'Obras e infraestrutura',
     'cat.serv': 'Serviços Urbanos',
@@ -164,6 +197,34 @@ const T = {
     'nav.myProfile': 'My profile',
     'nav.logout': 'Sign out',
 
+    // Moderation and administration
+    'nav.moderation': 'Moderation',
+    'nav.adminPanel': 'Admin panel',
+    'nav.moderator': 'Moderator',
+    'nav.admin': 'Administrator',
+    'nav.adminHelp': 'Manage who can validate published reports.',
+    'nav.moderationHelp': 'Review community reports and indicate whether they are true.',
+    'nav.manageModerators': 'Manage moderators',
+    'nav.promoteRemoveModerators': 'Promote registered accounts or remove moderation permissions.',
+    'nav.noUsers': 'There are no registered accounts to manage yet.',
+    'nav.reviewOccurrences': 'Reports to review',
+    'nav.pending': 'pending',
+    'nav.noOccurrences': 'No reports have been published yet.',
+    'nav.user': 'User',
+    'nav.occurrence': 'Report',
+    'nav.noDescription': 'No description.',
+    'nav.locationNotInformed': 'Location not provided',
+    'nav.publishedBy': 'Published by:',
+    'nav.removeModerator': 'Remove moderator',
+    'nav.makeModerator': 'Make moderator',
+    'nav.markVerified': 'Mark as verified',
+    'nav.markFalse': 'Mark as false',
+    'nav.verified': 'Verified',
+    'nav.false': 'False',
+    'nav.underReview': 'Under review',
+    'nav.attachedImage': 'Image attached to the report',
+    'nav.moderationWarning': 'This prototype uses local browser storage. Permissions and decisions are not protected by a server and can be changed by anyone with access to the device.',
+
     'cat.obras': 'Works and infrastructure',
     'cat.serv': 'Urban services',
     'cat.saude': 'Health and care',
@@ -293,6 +354,34 @@ const T = {
     'nav.myProfile': 'Mi perfil',
     'nav.logout': 'Cerrar sesión',
 
+    // Moderación y administración
+    'nav.moderation': 'Moderación',
+    'nav.adminPanel': 'Panel administrativo',
+    'nav.moderator': 'Moderador',
+    'nav.admin': 'Administrador',
+    'nav.adminHelp': 'Administra quién puede validar las publicaciones.',
+    'nav.moderationHelp': 'Revisa los reportes de la comunidad e indica si son verdaderos.',
+    'nav.manageModerators': 'Administrar moderadores',
+    'nav.promoteRemoveModerators': 'Promueve cuentas registradas o elimina los permisos de moderación.',
+    'nav.noUsers': 'Todavía no hay cuentas registradas para administrar.',
+    'nav.reviewOccurrences': 'Reportes para revisar',
+    'nav.pending': 'pendiente(s)',
+    'nav.noOccurrences': 'Todavía no se ha publicado ningún reporte.',
+    'nav.user': 'Usuario',
+    'nav.occurrence': 'Reporte',
+    'nav.noDescription': 'Sin descripción.',
+    'nav.locationNotInformed': 'Ubicación no informada',
+    'nav.publishedBy': 'Publicado por:',
+    'nav.removeModerator': 'Eliminar moderador',
+    'nav.makeModerator': 'Convertir en moderador',
+    'nav.markVerified': 'Marcar como verídico',
+    'nav.markFalse': 'Marcar como falso',
+    'nav.verified': 'Verificado',
+    'nav.false': 'Falso',
+    'nav.underReview': 'En revisión',
+    'nav.attachedImage': 'Imagen adjunta al reporte',
+    'nav.moderationWarning': 'Este prototipo utiliza almacenamiento local del navegador. Los permisos y las decisiones no están protegidos por un servidor y pueden ser modificados por quien tenga acceso al dispositivo.',
+
     'cat.obras': 'Obras e infraestructura',
     'cat.serv': 'Servicios urbanos',
     'cat.saude': 'Salud y asistencia',
@@ -403,6 +492,9 @@ export function criarT(idioma) {
   return (chave) => dic[chave] ?? T.pt[chave] ?? chave;
 }
 
-export const IdiomaContext = createContext({ idioma: 'pt', t: criarT('pt') });
+export const IdiomaContext = createContext({
+  idioma: 'pt',
+  t: criarT('pt')
+});
 
 export const useIdioma = () => useContext(IdiomaContext);

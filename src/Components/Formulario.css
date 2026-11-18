@@ -277,3 +277,8 @@ button.tgl.on::after {
 .drawer-overlay {
   pointer-events: none;
 }
+
+
+.form-imagem-preview{display:flex;flex-direction:column;gap:8px;margin:4px 0 10px}
+.form-imagem-preview img{width:100%;max-height:180px;object-fit:cover;border-radius:12px;border:1px solid #444}
+.form-imagem-preview button{align-self:flex-start;border:0;background:transparent;color:#c59dff;cursor:pointer;font-size:.8rem}

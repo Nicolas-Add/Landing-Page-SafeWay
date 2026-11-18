@@ -1,0 +1,222 @@
+
+/* ==============================
+   PÁGINA DE MODERAÇÃO
+============================== */
+
+.moderacao-pagina {
+    width: 100%;
+    min-height: 100%;
+    height: auto;
+    overflow: auto;
+
+    /* Espaço para a Navbar */
+    padding: 110px clamp(18px, 4vw, 42px) 42px;
+
+    box-sizing: border-box;
+    color: var(--text, #f1f5f9);
+    background: var(--bg, #0b0b0e);
+}
+/* Cabeçalho */
+
+.moderacao-topo {
+  max-width: 1050px;
+  margin: 0 auto 24px;
+}
+
+.moderacao-selo {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: #c59dff;
+  font-weight: 800;
+}
+
+.moderacao-topo h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin: 8px 0;
+}
+
+.moderacao-topo p,
+.moderacao-ajuda {
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* Blocos principais */
+
+.moderacao-bloco {
+  max-width: 1050px;
+  margin: 0 auto 22px;
+  padding: 22px;
+  border: 1px solid rgba(197, 157, 255, 0.22);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.moderacao-bloco h2 {
+  font-size: 1.15rem;
+  margin: 0 0 8px;
+}
+
+.moderacao-titulo-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.moderacao-titulo-linha span {
+  font-size: 0.8rem;
+  color: #c59dff;
+}
+
+.moderacao-vazio {
+  color: #9ca3af;
+  padding: 18px 0;
+}
+
+/* Lista de usuários e ocorrências */
+
+.moderacao-usuarios,
+.moderacao-lista {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+/* Usuários */
+
+.moderacao-usuario {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 13px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.moderacao-usuario div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.moderacao-usuario span,
+.moderacao-card small {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  overflow-wrap: anywhere;
+}
+
+/* Botões */
+
+.moderacao-usuario button,
+.moderacao-acoes button {
+  border: 0;
+  border-radius: 999px;
+  padding: 9px 13px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #5424bb;
+  color: white;
+}
+
+.moderacao-usuario button.remover {
+  background: #374151;
+}
+
+/* Cards de moderação */
+
+.moderacao-card {
+  padding: 16px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.045);
+  display: grid;
+  gap: 9px;
+}
+
+.moderacao-card-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.moderacao-card p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* Status das ocorrências */
+
+.moderacao-status {
+  font-size: 0.72rem;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #78350f;
+  color: #fcd34d;
+}
+
+.moderacao-status.verificada {
+  background: #064e3b;
+  color: #a7f3d0;
+}
+
+.moderacao-status.falsa {
+  background: #7f1d1d;
+  color: #fecaca;
+}
+
+/* Imagens */
+
+.moderacao-foto {
+  width: min(100%, 420px);
+  max-height: 230px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Ações de moderação */
+
+.moderacao-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.moderacao-acoes .aprovar {
+  background: #047857;
+}
+
+.moderacao-acoes .reprovar {
+  background: #991b1b;
+}
+
+/* Aviso */
+
+.moderacao-aviso {
+  max-width: 1050px;
+  margin: 0 auto 20px;
+  color: #9ca3af;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* Responsividade */
+
+@media (max-width: 560px) {
+  .moderacao-bloco {
+    padding: 15px;
+  }
+
+  .moderacao-usuario {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .moderacao-titulo-linha {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

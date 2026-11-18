@@ -72,6 +72,11 @@ export default function CardOcorrencia({ p, onComment, podeApagar = false, onApa
         </div>
         {p.fonte ? <span className="vf">✔ {p.fonte}</span> : <span className="unv">{t("c.unverified")}</span>}
       </div>
+      <div className="status-moderacao-card">
+        <span className={p.statusModeracao === "Verificada" ? "verificada" : p.statusModeracao === "Falsa" ? "falsa" : "analise"}>
+          {p.statusModeracao || "Em análise"}
+        </span>
+      </div>
       <div className="card-acoes">
         <button type="button" className="cbtn" onClick={() => setOpen(!open)}>
           💬 {t("c.comment")}{cs.length ? ` (${cs.length})` : ""}
